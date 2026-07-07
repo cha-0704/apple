@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-bright": "#f9f9ff",
+                    "primary-fixed": "#dae2ff",
+                    "on-primary-container": "#c4d2ff",
+                    "error-container": "#ffdad6",
+                    "on-tertiary-container": "#ffca81",
+                    "tertiary-fixed": "#ffddb3",
+                    "outline-variant": "#c3c6d6",
+                    "surface-dim": "#cadbfc",
+                    "tertiary": "#5e3c00",
+                    "primary-fixed-dim": "#b2c5ff",
+                    "surface-container-high": "#dfe8ff",
+                    "on-secondary-fixed": "#0a1f18",
+                    "inverse-on-surface": "#ecf0ff",
+                    "on-error-container": "#93000a",
+                    "inverse-primary": "#b2c5ff",
+                    "surface-container-low": "#f0f3ff",
+                    "on-tertiary-fixed-variant": "#624000",
+                    "secondary-fixed-dim": "#b4ccc0",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-container": "#0052cc",
+                    "secondary-container": "#cfe8dc",
+                    "on-background": "#091c35",
+                    "on-surface-variant": "#434654",
+                    "on-surface": "#091c35",
+                    "on-primary": "#ffffff",
+                    "outline": "#737685",
+                    "secondary": "#4d6359",
+                    "on-secondary-fixed-variant": "#364b42",
+                    "on-primary-fixed": "#001848",
+                    "background": "#f9f9ff",
+                    "surface-tint": "#0c56d0",
+                    "inverse-surface": "#20314b",
+                    "tertiary-fixed-dim": "#ffb950",
+                    "surface-variant": "#d6e3ff",
+                    "surface": "#f9f9ff",
+                    "primary": "#003d9b",
+                    "secondary-fixed": "#cfe8dc",
+                    "tertiary-container": "#7d5200",
+                    "on-error": "#ffffff",
+                    "surface-container": "#e7eeff",
+                    "error": "#ba1a1a",
+                    "on-tertiary-fixed": "#291800",
+                    "on-tertiary": "#ffffff",
+                    "on-primary-fixed-variant": "#0040a2",
+                    "surface-container-highest": "#d6e3ff",
+                    "on-secondary": "#ffffff",
+                    "on-secondary-container": "#53695f"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "container-margin": "24px",
+                    "unit": "4px",
+                    "stack-md": "16px",
+                    "stack-sm": "8px",
+                    "section-gap": "40px",
+                    "stack-lg": "24px",
+                    "gutter": "16px"
+            },
+            "fontFamily": {
+                    "body-lg": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "body-md": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "label-md": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "headline-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .timer-ring {
+            transition: stroke-dashoffset 1s linear;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            height: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #003d9b;
+            border-radius: 10px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-surface-bright text-on-surface antialiased pb-32">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky bg-surface-bright dark:bg-surface-dim shadow-sm z-50">
+<div class="flex justify-between items-center px-container-margin py-stack-md w-full max-w-full">
+<div class="flex items-center gap-stack-sm">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed-dim" style="font-size: 28px;">clinical_notes</span>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary dark:text-primary-fixed-dim">NeckCare</h1>
+</div>
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-surface-container-high active:scale-95 duration-150 transition-colors hover:bg-surface-container-low">
+<img alt="의료 전문가의 프로필 이미지" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD92YDdOM7CznZei4KOnmNlqXbvZ9XniySjinM8cN3uvWVxnfbVSq6CYEZa-VsNsWX8eP4hLbig7p5YI5kfMlLALI6jBaZCBa256va2jg3t919ecRuGE3avbP1gao1W5v0mS8bfKURa8_ezkGkyvaMts1SRLjwRtyDFV9zQqhZDq6s4wTvH3B_bLmT9Ha09fv0i5rANF1LofItJ7hgwYB5-z0p4Ck_EUQHvtaLAkLrFbSbziYMjlV2xTPRpkD9zRqWLR6pPZf4MBg"/>
+</div>
+</div>
+</header>
+<main class="max-w-4xl mx-auto px-container-margin mt-stack-lg space-y-section-gap">
+<!-- Daily Progress Section -->
+<section class="bg-surface-container-low rounded-xl p-stack-lg shadow-sm">
+<div class="flex justify-between items-end mb-stack-sm">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface">오늘의 진행 상황</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">잘하고 있어요! 거의 다 왔습니다.</p>
+</div>
+<span class="font-headline-md text-headline-md text-primary">65%</span>
+</div>
+<div class="w-full bg-outline-variant h-3 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full transition-all duration-700" style="width: 65%;"></div>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-stack-sm">오늘 6개 중 4개 완료</p>
+</section>
+<!-- Featured Exercise: Mackenzie Exercise -->
+<section class="space-y-stack-md">
+<h3 class="font-headline-md text-headline-md text-on-surface px-unit">현재 운동</h3>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-lg">
+<div class="grid grid-cols-1 md:grid-cols-2">
+<!-- Instruction Illustrations Gallery -->
+<div class="relative bg-surface-container-low">
+<div class="flex overflow-x-auto snap-x snap-mandatory custom-scrollbar h-64 md:h-full">
+<div class="snap-center shrink-0 w-full relative">
+<img alt="Step 1: 바른 자세로 앉기" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8eYwCNdvz-RhVjBknLMYP9DQDjDUivNsR_H27PX87rfIBixhFM7c5nKBm7GB505CXtwsoRh9TzsY-bAjc_vyDvKolN24sIZlT_LIHH7oMjImmA_xOeF3S6lu3PKwleGpr1lWtEfvYFucXen_WyAq6iOk7d0CjvPhqZ8qsHVoyROEfaMUDEidIFKeWKlyQeDA6buG8d0la-TSx2jlzRKKBZ5yNGH3hQwRuaZMMPRMUvJhPqXKEkBASiIA2aSfyEN42MSQItDJ_GA"/>
+<div class="absolute bottom-2 left-4 bg-black/50 text-white px-2 py-1 rounded text-label-sm">Step 1: 바른 자세로 앉기</div>
+</div>
+<div class="snap-center shrink-0 w-full relative">
+<img alt="Step 2: 턱 당기기" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5CgtS3gdqvagzMH9YMhnBJtk942U__I6cMsgGoCH_jIXYl3oByn6KwJywqE2IZCA8H_w3EV9Zibri0xpdmPgSUS7MeTRn3fF1Cj6zww9UJfazDWNHu3qPUZBWoQFX-B-Ff6roPW2kw5M_bIxibOKXnA7SfRNNhWJ2le1mDjKHw0LRR530_WYGHhGYKMhhEmZKsG06z3ILNhaQ9BpZyY19VdgXBu2KiGsprVL7zweREuGSv0cfymnrxRPceelJ4xaVmQw-VTbyHQ"/>
+<div class="absolute bottom-2 left-4 bg-black/50 text-white px-2 py-1 rounded text-label-sm">Step 2: 턱 당기기</div>
+</div>
+<div class="snap-center shrink-0 w-full relative">
+<img alt="Step 3: 뒤로 젖히기" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDBqqSst5xIFrkW3Jt9igLCm5JAsfr8IMXcmrCF5liBevD-nz0Qgrpg3yMjuNlwg6E4HPeLD0Lfh2pJ_vWCuYTvTnA3eo0Y2Olv60KlU1Yw3386X_rBwTweIecUOk0Gvjvej6-ZXwSVna19T8XZ51UbZEF8dBc-6NszK71P4-lDDFJefutAaA3TMxl0M-rSAZWiHnropjQr8USKbAI7ZiWY2ooRbyTgEWJcZ-m3Mm99sy59iAXt47zhljqAyj96fjqKMaagw8fLdw"/>
+<div class="absolute bottom-2 left-4 bg-black/50 text-white px-2 py-1 rounded text-label-sm">Step 3: 뒤로 젖히기</div>
+</div>
+</div>
+<div class="absolute top-4 left-4 bg-primary text-on-primary px-stack-sm py-unit rounded-lg font-label-sm text-label-sm uppercase tracking-wider">추천</div>
+</div>
+<!-- Details & Timer -->
+<div class="p-stack-lg flex flex-col justify-between">
+<div>
+<h4 class="font-headline-lg text-headline-lg text-on-surface mb-stack-sm">거북목 예방 맥켄지 운동</h4>
+<p class="font-body-md text-body-md text-on-surface-variant mb-stack-md leading-relaxed">
+맥켄지 운동은 목의 자연스러운 C자 곡선을 회복시키고 디스크에 가해지는 압력을 분산시켜 거북목과 목 통증 완화에 탁월합니다.
+</p>
+<ul class="space-y-stack-sm mb-stack-lg">
+<li class="flex items-start gap-stack-sm font-label-md text-label-md text-on-surface">
+<span class="material-symbols-outlined text-primary text-[20px]">check_circle</span>
+                                    Step 1: 가슴을 펴고 어깨의 힘을 뺀 상태로 바르게 앉습니다.
+                                </li>
+<li class="flex items-start gap-stack-sm font-label-md text-label-md text-on-surface">
+<span class="material-symbols-outlined text-primary text-[20px]">check_circle</span>
+                                    Step 2: 턱을 수평으로 유지하며 뒤로 가볍게 당겨줍니다.
+                                </li>
+<li class="flex items-start gap-stack-sm font-label-md text-label-md text-on-surface">
+<span class="material-symbols-outlined text-primary text-[20px]">check_circle</span>
+                                    Step 3: 당긴 상태를 유지하며 고개를 천천히 뒤로 젖힙니다.
+                                </li>
+</ul>
+</div>
+<div class="flex items-center justify-between pt-stack-md border-t border-outline-variant">
+<div class="flex items-center gap-stack-md">
+<div class="relative w-16 h-16">
+<svg class="w-full h-full">
+<circle cx="32" cy="32" fill="transparent" r="28" stroke="#EBECF0" stroke-width="4"></circle>
+<circle class="timer-ring" cx="32" cy="32" fill="transparent" r="28" stroke="#003d9b" stroke-dasharray="175.9" stroke-dashoffset="52.7" stroke-width="4"></circle>
+</svg>
+<span class="absolute inset-0 flex items-center justify-center font-label-md text-label-md text-primary">30s</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant">권장 시간</span>
+</div>
+<button class="bg-primary text-on-primary px-stack-lg py-stack-md rounded-xl font-label-md text-label-md hover:bg-primary-container transition-all active:scale-95">
+                                운동 시작하기
+                            </button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- All Exercises Bento Grid -->
+<section class="space-y-stack-md pb-stack-lg">
+<h3 class="font-headline-md text-headline-md text-on-surface px-unit">다음 추천 운동</h3>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-gutter">
+<!-- Exercise Card 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-stack-sm hover:shadow-md transition-shadow cursor-pointer group">
+<div class="aspect-square bg-surface-container rounded-lg mb-stack-sm overflow-hidden">
+<img alt="어깨 으쓱 운동" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDujalyA5P50b8g4CC4Aqh1CtlvIbmqy5CaD1OUXx9NfuV7UmgHyCW3fiLTIho_PGvJ5S-TtsKPiucyGJTga_gtvbSmwaylPz7p9H_cDXwtUSSCOlE4tidXSk6H0mXrjSfg2eadeTHt-P-_7gesAKaAQgRZd_AFYdTt0ZMiMVrLiYt7eO3HBHcDS7Dnoi1c95YccGp1wYUeeWOS4NpqoM7kcRuPqwkAMzDLdEc4-Xd87-zC9nJa1Y_7oQ1ahUp3XfaHVZHz2D1tjg"/>
+</div>
+<p class="font-label-md text-label-md text-on-surface px-unit truncate">어깨 으쓱 운동</p>
+<div class="flex items-center gap-unit px-unit mt-1">
+<span class="material-symbols-outlined text-[14px] text-on-surface-variant">schedule</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">2분</span>
+</div>
+</div>
+<!-- Exercise Card 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-stack-sm hover:shadow-md transition-shadow cursor-pointer group">
+<div class="aspect-square bg-surface-container rounded-lg mb-stack-sm overflow-hidden">
+<img alt="문틀 스트레칭" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCxXwO_uwK0x0rlUsFAcZmgtEItM5j1GQ4uVBboGkTiSVAN_JtVXGKq_SESqCRhy8q-2loQzyVRPUGQAtJc4qVvooF-7ZjYYWYHyXchjdE8nd2R7TtuHwVkXq7aZM8v1FGZX7tMEPHyBc3pzga-We3HTUPtR806XEMs-NLaR2MbYyrr83dAR4DqCBsz8RIjsOCV_cxCzp68f7TNOid4Ro92qXTvie8iuvAc9pz-bk498dq9-QkcUeh32B9imrLh13AtVbgFMTCzcw"/>
+</div>
+<p class="font-label-md text-label-md text-on-surface px-unit truncate">문틀 스트레칭</p>
+<div class="flex items-center gap-unit px-unit mt-1">
+<span class="material-symbols-outlined text-[14px] text-on-surface-variant">schedule</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">3분</span>
+</div>
+</div>
+<!-- Exercise Card 3 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-stack-sm hover:shadow-md transition-shadow cursor-pointer group">
+<div class="aspect-square bg-surface-container rounded-lg mb-stack-sm overflow-hidden">
+<img alt="경추 회전" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBp7p_bWQ1HH5imf9ZkmOFqkq5QfUB-y1H3bMZRfHH1RoashUcugP0UMxr2NopJ3jtxffGOb-3YWgbpqRgEhWdBlDsNf90-7xWhUBlysIVvGHi15NSQlQu5denFPapuLmJVXIyjOCpKmDnQAg90YGpdgp2tLWF2tyfwifMe0DYROimpTbdoQWLMd81ICTJNfU6OsOe-nV6fCQELKBLgmsb74N_ao5lgY1dTXJFoOdG1MyAD15SKK3Tuxb8b87j8o4jMpTC5cFhqDg"/>
+</div>
+<p class="font-label-md text-label-md text-on-surface px-unit truncate">경추 회전</p>
+<div class="flex items-center gap-unit px-unit mt-1">
+<span class="material-symbols-outlined text-[14px] text-on-surface-variant">schedule</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">1.5분</span>
+</div>
+</div>
+<!-- Exercise Card 4 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-stack-sm hover:shadow-md transition-shadow cursor-pointer group">
+<div class="aspect-square bg-surface-container rounded-lg mb-stack-sm overflow-hidden">
+<img alt="고양이 자세" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuArGTTHJv86JOlHe9T7_6rbn_7unsFx-BrWqdRQTndsBDiVdle3xMREQzD3Nra8azAwEuWH5GOyELI7_PE3zo4OBDW33WE7VHurOyO9cu5jIgjB65tg99L7CfClHN3jXaLtYFIyNIIbZkRjMASHTZERPRV1-7eteO42oYUS9Dq6gBYlFRKKVBQH1otf6hACSmVYKDtAGCAq4uxws0Wdl456R_4pnT6_Se0ZF8JZ3maUnhaJZp3pRJl95Rc_4xyQWhkYi5aL9Oj4ng"/>
+</div>
+<p class="font-label-md text-label-md text-on-surface px-unit truncate">고양이 자세</p>
+<div class="flex items-center gap-unit px-unit mt-1">
+<span class="material-symbols-outlined text-[14px] text-on-surface-variant">schedule</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">5분</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-gutter py-stack-sm pb-safe bg-surface-container-lowest dark:bg-inverse-surface shadow-[0_-4px_12px_rgba(0,0,0,0.05)] rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-stack-md py-unit hover:text-primary transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">home_health</span>
+<span class="font-label-sm text-label-sm mt-1">홈</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-stack-md py-unit hover:text-primary transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">photo_camera</span>
+<span class="font-label-sm text-label-sm mt-1">분석</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container dark:bg-primary text-on-primary-container dark:text-on-primary rounded-xl px-stack-md py-unit transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">fitness_center</span>
+<span class="font-label-sm text-label-sm mt-1">운동</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-stack-md py-unit hover:text-primary transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-sm text-label-sm mt-1">프로필</span>
+</a>
+</nav>
+<script>
+        // Simple timer simulation for the featured card
+        let timeLeft = 30;
+        const ring = document.querySelector('.timer-ring');
+        const timerText = document.querySelector('.timer-ring + span');
+        const totalLength = 175.9; // 2 * PI * 28 (approx)
+
+        function updateTimer() {
+            if (timeLeft <= 0) {
+                timeLeft = 30;
+            } else {
+                timeLeft--;
+            }
+            
+            const offset = totalLength - (timeLeft / 30) * totalLength;
+            ring.style.strokeDashoffset = offset;
+            timerText.textContent = timeLeft + 's';
+        }
+
+        // Run animation mock-up
+        setInterval(updateTimer, 1000);
+    </script>
+</body></html>

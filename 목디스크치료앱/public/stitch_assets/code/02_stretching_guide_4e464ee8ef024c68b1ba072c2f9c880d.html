@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-bright": "#f9f9ff",
+                    "primary-fixed": "#dae2ff",
+                    "on-primary-container": "#c4d2ff",
+                    "error-container": "#ffdad6",
+                    "on-tertiary-container": "#ffca81",
+                    "tertiary-fixed": "#ffddb3",
+                    "outline-variant": "#c3c6d6",
+                    "surface-dim": "#cadbfc",
+                    "tertiary": "#5e3c00",
+                    "primary-fixed-dim": "#b2c5ff",
+                    "surface-container-high": "#dfe8ff",
+                    "on-secondary-fixed": "#0a1f18",
+                    "inverse-on-surface": "#ecf0ff",
+                    "on-error-container": "#93000a",
+                    "inverse-primary": "#b2c5ff",
+                    "surface-container-low": "#f0f3ff",
+                    "on-tertiary-fixed-variant": "#624000",
+                    "secondary-fixed-dim": "#b4ccc0",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-container": "#0052cc",
+                    "secondary-container": "#cfe8dc",
+                    "on-background": "#091c35",
+                    "on-surface-variant": "#434654",
+                    "on-surface": "#091c35",
+                    "on-primary": "#ffffff",
+                    "outline": "#737685",
+                    "secondary": "#4d6359",
+                    "on-secondary-fixed-variant": "#364b42",
+                    "on-primary-fixed": "#001848",
+                    "background": "#f9f9ff",
+                    "surface-tint": "#0c56d0",
+                    "inverse-surface": "#20314b",
+                    "tertiary-fixed-dim": "#ffb950",
+                    "surface-variant": "#d6e3ff",
+                    "surface": "#f9f9ff",
+                    "primary": "#003d9b",
+                    "secondary-fixed": "#cfe8dc",
+                    "tertiary-container": "#7d5200",
+                    "on-error": "#ffffff",
+                    "surface-container": "#e7eeff",
+                    "error": "#ba1a1a",
+                    "on-tertiary-fixed": "#291800",
+                    "on-tertiary": "#ffffff",
+                    "on-primary-fixed-variant": "#0040a2",
+                    "surface-container-highest": "#d6e3ff",
+                    "on-secondary": "#ffffff",
+                    "on-secondary-container": "#53695f"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "container-margin": "24px",
+                    "unit": "4px",
+                    "stack-md": "16px",
+                    "stack-sm": "8px",
+                    "section-gap": "40px",
+                    "stack-lg": "24px",
+                    "gutter": "16px"
+            },
+            "fontFamily": {
+                    "body-lg": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "body-md": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "label-md": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "headline-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .timer-ring {
+            transition: stroke-dashoffset 1s linear;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface-bright text-on-surface antialiased pb-32">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky bg-surface-bright dark:bg-surface-dim shadow-sm z-50">
+<div class="flex justify-between items-center px-container-margin py-stack-md w-full max-w-full">
+<div class="flex items-center gap-stack-sm">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed-dim" style="font-size: 28px;">clinical_notes</span>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary dark:text-primary-fixed-dim">NeckCare</h1>
+</div>
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-surface-container-high active:scale-95 duration-150 transition-colors hover:bg-surface-container-low">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a friendly medical professional with a clean, clinical background. The doctor is wearing a white coat and has a reassuring smile. The lighting is bright and professional, following a high-end medical healthcare aesthetic with soft blue and white tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD92YDdOM7CznZei4KOnmNlqXbvZ9XniySjinM8cN3uvWVxnfbVSq6CYEZa-VsNsWX8eP4hLbig7p5YI5kfMlLALI6jBaZCBa256va2jg3t919ecRuGE3avbP1gao1W5v0mS8bfKURa8_ezkGkyvaMts1SRLjwRtyDFV9zQqhZDq6s4wTvH3B_bLmT9Ha09fv0i5rANF1LofItJ7hgwYB5-z0p4Ck_EUQHvtaLAkLrFbSbziYMjlV2xTPRpkD9zRqWLR6pPZf4MBg"/>
+</div>
+</div>
+</header>
+<main class="max-w-4xl mx-auto px-container-margin mt-stack-lg space-y-section-gap">
+<!-- Daily Progress Section -->
+<section class="bg-surface-container-low rounded-xl p-stack-lg shadow-sm">
+<div class="flex justify-between items-end mb-stack-sm">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface">Daily Progress</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Keep it up! You're almost there.</p>
+</div>
+<span class="font-headline-md text-headline-md text-primary">65%</span>
+</div>
+<div class="w-full bg-outline-variant h-3 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full transition-all duration-700" style="width: 65%;"></div>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-stack-sm">4 of 6 exercises completed today</p>
+</section>
+<!-- Featured Exercise: Mackenzie Exercise -->
+<section class="space-y-stack-md">
+<h3 class="font-headline-md text-headline-md text-on-surface px-unit">Current Exercise</h3>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-lg">
+<div class="grid grid-cols-1 md:grid-cols-2">
+<!-- Instruction Illustration -->
+<div class="relative h-64 md:h-full bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="A clean, medical-grade 3D illustration of a person performing the Mackenzie neck stretch. The style is minimalist and clinical, using a palette of soft blues, whites, and light grays. The person's posture is shown with clear anatomical precision, highlighting the cervical spine area in a supportive, professional healthcare aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBUg-6jMGolvEO1iCwVoPYsEAQss1xWJVPGJCrkLwz_s5Ps4NtYc_jHFWnChlf1oyf65_KN1PaKz54BqrzMS7WX0zE39O3lgOtYFrAbsaJVW5-F_JHMmi5GVYOgiehekf-Ktipz84y-0xPSscH4oAruvraZSMSDsAdNZveBsL1fnZUIKeU-cotPU-jFiSWRC-be0pg-pOAFgnaOW69Cl9_A6tWhSqFpq58z0VFD9NrYGbPaYI221fa3PwRngz9y8_sp8tobIXzWcA"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+<div class="absolute top-4 left-4 bg-primary text-on-primary px-stack-sm py-unit rounded-lg font-label-sm text-label-sm uppercase tracking-wider">Featured</div>
+</div>
+<!-- Details & Timer -->
+<div class="p-stack-lg flex flex-col justify-between">
+<div>
+<h4 class="font-headline-lg text-headline-lg text-on-surface mb-stack-sm">거북목 예방 맥켄지 운동</h4>
+<p class="font-body-md text-body-md text-on-surface-variant mb-stack-lg leading-relaxed">This exercise focuses on restoring the natural curve of the neck and relieving pressure on the spinal discs.</p>
+<ul class="space-y-stack-sm mb-stack-lg">
+<li class="flex items-start gap-stack-sm font-label-md text-label-md text-on-surface">
+<span class="material-symbols-outlined text-primary text-[20px]">check_circle</span>
+                                    Sit upright with shoulders relaxed
+                                </li>
+<li class="flex items-start gap-stack-sm font-label-md text-label-md text-on-surface">
+<span class="material-symbols-outlined text-primary text-[20px]">check_circle</span>
+                                    Gently pull your chin back without tilting
+                                </li>
+<li class="flex items-start gap-stack-sm font-label-md text-label-md text-on-surface">
+<span class="material-symbols-outlined text-primary text-[20px]">check_circle</span>
+                                    Hold for 5 seconds and repeat
+                                </li>
+</ul>
+</div>
+<div class="flex items-center justify-between pt-stack-md border-t border-outline-variant">
+<div class="flex items-center gap-stack-md">
+<div class="relative w-16 h-16">
+<svg class="w-full h-full">
+<circle cx="32" cy="32" fill="transparent" r="28" stroke="#EBECF0" stroke-width="4"></circle>
+<circle class="timer-ring" cx="32" cy="32" fill="transparent" r="28" stroke="#003d9b" stroke-dasharray="175.9" stroke-dashoffset="52.7" stroke-width="4"></circle>
+</svg>
+<span class="absolute inset-0 flex items-center justify-center font-label-md text-label-md text-primary">30s</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant">Recommended Duration</span>
+</div>
+<button class="bg-primary text-on-primary px-stack-lg py-stack-md rounded-xl font-label-md text-label-md hover:bg-primary-container transition-all active:scale-95">
+                                Start Session
+                            </button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- All Exercises Bento Grid -->
+<section class="space-y-stack-md pb-stack-lg">
+<h3 class="font-headline-md text-headline-md text-on-surface px-unit">Up Next</h3>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-gutter">
+<!-- Exercise Card 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-stack-sm hover:shadow-md transition-shadow cursor-pointer group">
+<div class="aspect-square bg-surface-container rounded-lg mb-stack-sm overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Minimalist medical illustration of a shoulder shrug exercise. Clear focus on upper back and trapezius muscles. High-key lighting, soft clinical blue tones, professional healthcare style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDujalyA5P50b8g4CC4Aqh1CtlvIbmqy5CaD1OUXx9NfuV7UmgHyCW3fiLTIho_PGvJ5S-TtsKPiucyGJTga_gtvbSmwaylPz7p9H_cDXwtUSSCOlE4tidXSk6H0mXrjSfg2eadeTHt-P-_7gesAKaAQgRZd_AFYdTt0ZMiMVrLiYt7eO3HBHcDS7Dnoi1c95YccGp1wYUeeWOS4NpqoM7kcRuPqwkAMzDLdEc4-Xd87-zC9nJa1Y_7oQ1ahUp3XfaHVZHz2D1tjg"/>
+</div>
+<p class="font-label-md text-label-md text-on-surface px-unit truncate">Shoulder Shrugs</p>
+<div class="flex items-center gap-unit px-unit mt-1">
+<span class="material-symbols-outlined text-[14px] text-on-surface-variant">schedule</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">2 min</span>
+</div>
+</div>
+<!-- Exercise Card 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-stack-sm hover:shadow-md transition-shadow cursor-pointer group">
+<div class="aspect-square bg-surface-container rounded-lg mb-stack-sm overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Anatomical drawing of a chest opening stretch in a doorway. Soft, soothing medical art style with light green and blue accents. Focused on spine alignment and posture correction." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCxXwO_uwK0x0rlUsFAcZmgtEItM5j1GQ4uVBboGkTiSVAN_JtVXGKq_SESqCRhy8q-2loQzyVRPUGQAtJc4qVvooF-7ZjYYWYHyXchjdE8nd2R7TtuHwVkXq7aZM8v1FGZX7tMEPHyBc3pzga-We3HTUPtR806XEMs-NLaR2MbYyrr83dAR4DqCBsz8RIjsOCV_cxCzp68f7TNOid4Ro92qXTvie8iuvAc9pz-bk498dq9-QkcUeh32B9imrLh13AtVbgFMTCzcw"/>
+</div>
+<p class="font-label-md text-label-md text-on-surface px-unit truncate">Doorway Stretch</p>
+<div class="flex items-center gap-unit px-unit mt-1">
+<span class="material-symbols-outlined text-[14px] text-on-surface-variant">schedule</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">3 min</span>
+</div>
+</div>
+<!-- Exercise Card 3 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-stack-sm hover:shadow-md transition-shadow cursor-pointer group">
+<div class="aspect-square bg-surface-container rounded-lg mb-stack-sm overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Instructional medical illustration showing cervical rotation for neck mobility. Professional and calm aesthetic, high-quality rendering, light gray background with blue highlights on active joints." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBp7p_bWQ1HH5imf9ZkmOFqkq5QfUB-y1H3bMZRfHH1RoashUcugP0UMxr2NopJ3jtxffGOb-3YWgbpqRgEhWdBlDsNf90-7xWhUBlysIVvGHi15NSQlQu5denFPapuLmJVXIyjOCpKmDnQAg90YGpdgp2tLWF2tyfwifMe0DYROimpTbdoQWLMd81ICTJNfU6OsOe-nV6fCQELKBLgmsb74N_ao5lgY1dTXJFoOdG1MyAD15SKK3Tuxb8b87j8o4jMpTC5cFhqDg"/>
+</div>
+<p class="font-label-md text-label-md text-on-surface px-unit truncate">Cervical Rotation</p>
+<div class="flex items-center gap-unit px-unit mt-1">
+<span class="material-symbols-outlined text-[14px] text-on-surface-variant">schedule</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">1.5 min</span>
+</div>
+</div>
+<!-- Exercise Card 4 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-stack-sm hover:shadow-md transition-shadow cursor-pointer group">
+<div class="aspect-square bg-surface-container rounded-lg mb-stack-sm overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Professional clinical illustration of a cat-cow yoga pose for back health. Soft colors, minimalist environment, high-quality medical instructional style focused on spinal flexibility." src="https://lh3.googleusercontent.com/aida-public/AB6AXuArGTTHJv86JOlHe9T7_6rbn_7unsFx-BrWqdRQTndsBDiVdle3xMREQzD3Nra8azAwEuWH5GOyELI7_PE3zo4OBDW33WE7VHurOyO9cu5jIgjB65tg99L7CfClHN3jXaLtYFIyNIIbZkRjMASHTZERPRV1-7eteO42oYUS9Dq6gBYlFRKKVBQH1otf6hACSmVYKDtAGCAq4uxws0Wdl456R_4pnT6_Se0ZF8JZ3maUnhaJZp3pRJl95Rc_4xyQWhkYi5aL9Oj4ng"/>
+</div>
+<p class="font-label-md text-label-md text-on-surface px-unit truncate">Cat-Cow Pose</p>
+<div class="flex items-center gap-unit px-unit mt-1">
+<span class="material-symbols-outlined text-[14px] text-on-surface-variant">schedule</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">5 min</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-gutter py-stack-sm pb-safe bg-surface-container-lowest dark:bg-inverse-surface shadow-[0_-4px_12px_rgba(0,0,0,0.05)] rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-stack-md py-unit hover:text-primary transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">home_health</span>
+<span class="font-label-sm text-label-sm mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-stack-md py-unit hover:text-primary transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">photo_camera</span>
+<span class="font-label-sm text-label-sm mt-1">Analysis</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container dark:bg-primary text-on-primary-container dark:text-on-primary rounded-xl px-stack-md py-unit transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">fitness_center</span>
+<span class="font-label-sm text-label-sm mt-1">Exercises</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-stack-md py-unit hover:text-primary transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-sm text-label-sm mt-1">Profile</span>
+</a>
+</nav>
+<script>
+        // Simple timer simulation for the featured card
+        let timeLeft = 30;
+        const ring = document.querySelector('.timer-ring');
+        const timerText = document.querySelector('.timer-ring + span');
+        const totalLength = 175.9; // 2 * PI * 28 (approx)
+
+        function updateTimer() {
+            if (timeLeft <= 0) {
+                timeLeft = 30;
+            } else {
+                timeLeft--;
+            }
+            
+            const offset = totalLength - (timeLeft / 30) * totalLength;
+            ring.style.strokeDashoffset = offset;
+            timerText.textContent = timeLeft + 's';
+        }
+
+        // Run animation mock-up
+        setInterval(updateTimer, 1000);
+    </script>
+</body></html>

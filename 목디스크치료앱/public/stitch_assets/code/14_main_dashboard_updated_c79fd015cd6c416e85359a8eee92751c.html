@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-bright": "#f9f9ff",
+                    "primary-fixed": "#dae2ff",
+                    "on-primary-container": "#c4d2ff",
+                    "error-container": "#ffdad6",
+                    "on-tertiary-container": "#ffca81",
+                    "tertiary-fixed": "#ffddb3",
+                    "outline-variant": "#c3c6d6",
+                    "surface-dim": "#cadbfc",
+                    "tertiary": "#5e3c00",
+                    "primary-fixed-dim": "#b2c5ff",
+                    "surface-container-high": "#dfe8ff",
+                    "on-secondary-fixed": "#0a1f18",
+                    "inverse-on-surface": "#ecf0ff",
+                    "on-error-container": "#93000a",
+                    "inverse-primary": "#b2c5ff",
+                    "surface-container-low": "#f0f3ff",
+                    "on-tertiary-fixed-variant": "#624000",
+                    "secondary-fixed-dim": "#b4ccc0",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-container": "#0052cc",
+                    "secondary-container": "#cfe8dc",
+                    "on-background": "#091c35",
+                    "on-surface-variant": "#434654",
+                    "on-surface": "#091c35",
+                    "on-primary": "#ffffff",
+                    "outline": "#737685",
+                    "secondary": "#4d6359",
+                    "on-secondary-fixed-variant": "#364b42",
+                    "on-primary-fixed": "#001848",
+                    "background": "#f9f9ff",
+                    "surface-tint": "#0c56d0",
+                    "inverse-surface": "#20314b",
+                    "tertiary-fixed-dim": "#ffb950",
+                    "surface-container": "#e7eeff",
+                    "error": "#ba1a1a",
+                    "on-tertiary-fixed": "#291800",
+                    "on-tertiary": "#ffffff",
+                    "on-primary-fixed-variant": "#0040a2",
+                    "surface-container-highest": "#d6e3ff",
+                    "on-secondary": "#ffffff",
+                    "on-secondary-container": "#53695f"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "container-margin": "24px",
+                    "unit": "4px",
+                    "stack-md": "16px",
+                    "stack-sm": "8px",
+                    "section-gap": "40px",
+                    "stack-lg": "24px",
+                    "gutter": "16px"
+            },
+            "fontFamily": {
+                    "body-lg": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "body-md": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "label-md": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "headline-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .circular-progress {
+            background: radial-gradient(closest-side, white 79%, transparent 80% 100%),
+                        conic-gradient(#0052cc 75%, #e7eeff 0);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-surface-bright text-on-surface min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky bg-surface-bright dark:bg-surface-dim shadow-sm z-40">
+<div class="flex justify-between items-center px-container-margin py-stack-md w-full max-w-full">
+<div class="flex items-center gap-stack-sm">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed-dim">clinical_notes</span>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary dark:text-primary-fixed-dim">NeckCare</h1>
+</div>
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-fixed">
+<img class="w-full h-full object-cover" data-alt="A professional medical profile avatar of a friendly specialist in a clean clinical environment, soft lighting, modern healthcare aesthetic, high quality photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBEwSlMNua_-U8obvPxZ5n3webo45Kd1zDXwrOkHIaZXpxayjM3spJm_Wv4BE317WaYJbIEB7iIOn0vg_r6Z9XN77VtA8h273E7HNmXOr-LIKfitjdRJgiKeta46kXX96ksqd0zVEYzIbmGrm73tXcF7NMqJPZbvYvU1mtbfKMaj9eCjbukEHa-n_8qN4grmj5F0EcJr10HhbCSbEQeweDkpw1J_Jaf8FlHJ9Ex0QuvSAewWBDH3ElR6UBVXyIzXpPbdGINOAtKFw"/>
+</div>
+</div>
+</header>
+<main class="px-container-margin mt-stack-lg space-y-section-gap">
+<!-- Today's Score Bento Section -->
+<section class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<div class="md:col-span-12 lg:col-span-7 bg-surface-container-lowest rounded-xl p-stack-lg shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-outline-variant/30 flex flex-col items-center justify-center text-center">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-stack-lg w-full text-left">오늘의 자세 점수</h2>
+<!-- Circular Gauge -->
+<div class="relative w-48 h-48 flex items-center justify-center rounded-full circular-progress mb-stack-md transition-all duration-700 hover:scale-105">
+<div class="flex flex-col items-center">
+<span class="font-display-lg text-display-lg text-primary">75</span>
+<span class="font-label-md text-label-md text-outline">/ 100</span>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-xs">
+                    좋은 성적이에요! 어제보다 <span class="text-primary font-bold">5점</span> 올랐습니다. 목의 피로도가 낮아지고 있어요.
+                </p>
+</div>
+<!-- Quick Action Cards -->
+<div class="md:col-span-12 lg:col-span-5 grid grid-cols-1 gap-gutter">
+<button class="flex items-center gap-stack-lg p-stack-lg bg-primary-container text-on-primary rounded-xl transition-transform active:scale-95 text-left group">
+<div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-white" style="font-variation-settings: 'FILL' 1;">photo_camera</span>
+</div>
+<div>
+<h3 class="font-headline-md text-[18px] font-bold leading-tight">지금 자세 측정하기</h3>
+<p class="font-label-sm text-label-sm opacity-80 mt-1">AI가 실시간으로 거북목을 진단합니다</p>
+</div>
+<span class="material-symbols-outlined ml-auto group-hover:translate-x-1 transition-transform">chevron_right</span>
+</button>
+<button class="flex items-center gap-stack-lg p-stack-lg bg-surface-container-high rounded-xl transition-transform active:scale-95 text-left group">
+<div class="w-12 h-12 bg-secondary-container rounded-lg flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">fitness_center</span>
+</div>
+<div>
+<h3 class="font-headline-md text-[18px] font-bold leading-tight text-on-surface">추천 스트레칭</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-1">3분이면 충분한 목 근육 이완법</p>
+</div>
+<span class="material-symbols-outlined ml-auto text-on-surface-variant group-hover:translate-x-1 transition-transform">chevron_right</span>
+</button>
+</div>
+</section>
+<!-- Weekly Activity Graph -->
+<section class="bg-surface-container-lowest rounded-xl p-stack-lg shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-outline-variant/30">
+<div class="flex justify-between items-end mb-stack-lg">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface">주간 리포트</h2>
+<p class="font-label-md text-label-md text-outline">지난 7일간의 자세 일관성</p>
+</div>
+<div class="flex items-center gap-unit text-primary font-bold">
+<span class="material-symbols-outlined text-[20px]">trending_up</span>
+<span class="text-label-md">+12%</span>
+</div>
+</div>
+<!-- Updated Custom Bar Chart -->
+<div class="flex items-end justify-between h-40 gap-gutter px-2">
+<div class="flex flex-col items-center flex-1 gap-2">
+<div class="w-full bg-primary-container/30 rounded-t-lg transition-all hover:bg-primary-container/50 h-[60%]"></div>
+<span class="font-label-sm text-label-sm text-outline">월</span>
+</div>
+<div class="flex flex-col items-center flex-1 gap-2">
+<div class="w-full bg-primary-container/30 rounded-t-lg transition-all hover:bg-primary-container/50 h-[45%]"></div>
+<span class="font-label-sm text-label-sm text-outline">화</span>
+</div>
+<div class="flex flex-col items-center flex-1 gap-2">
+<div class="w-full bg-primary-container/30 rounded-t-lg transition-all hover:bg-primary-container/50 h-[80%]"></div>
+<span class="font-label-sm text-label-sm text-outline">수</span>
+</div>
+<div class="flex flex-col items-center flex-1 gap-2">
+<div class="w-full bg-primary rounded-t-lg h-[75%] relative">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-on-background text-white text-[10px] py-1 px-2 rounded whitespace-nowrap shadow-sm z-10">오늘 75</div>
+</div>
+<span class="font-label-sm text-label-sm text-primary font-bold">목</span>
+</div>
+<div class="flex flex-col items-center flex-1 gap-2">
+<div class="w-full bg-primary-container/30 rounded-t-lg transition-all hover:bg-primary-container/50 h-[55%]"></div>
+<span class="font-label-sm text-label-sm text-outline">금</span>
+</div>
+<div class="flex flex-col items-center flex-1 gap-2">
+<div class="w-full bg-primary-container/30 rounded-t-lg transition-all hover:bg-primary-container/50 h-[40%]"></div>
+<span class="font-label-sm text-label-sm text-outline">토</span>
+</div>
+<div class="flex flex-col items-center flex-1 gap-2">
+<div class="w-full bg-primary-container/30 rounded-t-lg transition-all hover:bg-primary-container/50 h-[65%]"></div>
+<span class="font-label-sm text-label-sm text-outline">일</span>
+</div>
+</div>
+</section>
+<!-- Insights / Tip -->
+<section class="bg-secondary-container/30 rounded-xl p-stack-md flex gap-stack-md border border-secondary-container items-start">
+<span class="material-symbols-outlined text-secondary">lightbulb</span>
+<div>
+<h4 class="font-label-md text-label-md text-on-secondary-container font-bold">오늘의 팁</h4>
+<p class="font-body-md text-sm text-on-secondary-container/80 leading-relaxed mt-1">
+                    장시간 작업 시 50분마다 어깨를 뒤로 펴는 동작을 10회 반복해보세요. 거북목 증상을 크게 완화할 수 있습니다.
+                </p>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 bg-surface-container-lowest dark:bg-inverse-surface shadow-[0_-4px_12px_rgba(0,0,0,0.05)] flex justify-around items-center px-gutter py-stack-sm pb-safe rounded-t-xl">
+<!-- Home (Active) -->
+<a class="flex flex-col items-center justify-center bg-primary-container dark:bg-primary text-on-primary-container dark:text-on-primary rounded-xl px-stack-md py-unit active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">home_health</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</a>
+<!-- Analysis -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-stack-md py-unit hover:text-primary transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">photo_camera</span>
+<span class="font-label-sm text-label-sm">Analysis</span>
+</a>
+<!-- Exercises -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-stack-md py-unit hover:text-primary transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">fitness_center</span>
+<span class="font-label-sm text-label-sm">Exercises</span>
+</a>
+<!-- Profile -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-stack-md py-unit hover:text-primary transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-sm text-label-sm">Profile</span>
+</a>
+</nav>
+<script>
+        // Simple entry animations
+        document.addEventListener('DOMContentLoaded', () => {
+            const elements = document.querySelectorAll('section, button');
+            elements.forEach((el, index) => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(10px)';
+                el.style.transition = `opacity 0.5s ease ${index * 0.1}s, transform 0.5s ease ${index * 0.1}s`;
+                setTimeout(() => {
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                }, 50);
+            });
+        });
+    </script>
+</body></html>

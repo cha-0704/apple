@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html class="light" lang="ko">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+    <title>바른자세 목허리 케어 코치 - NeckCare</title>
+    <!-- Tailwind CSS with Forms and Container Queries -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <!-- TensorFlow.js and Pose Detection (MoveNet) -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-core@3.11.0/dist/tf-core.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-converter@3.11.0/dist/tf-converter.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-webgl@3.11.0/dist/tf-backend-webgl.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/pose-detection@2.0.0/dist/pose-detection.min.js"></script>
+    <!-- Three.js and OrbitControls for 3D Coaching Player -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-bright": "#f9f9ff",
+                        "primary-fixed": "#dae2ff",
+                        "on-primary-container": "#c4d2ff",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-container": "#ffca81",
+                        "tertiary-fixed": "#ffddb3",
+                        "outline-variant": "#c3c6d6",
+                        "surface-dim": "#cadbfc",
+                        "tertiary": "#5e3c00",
+                        "primary-fixed-dim": "#b2c5ff",
+                        "surface-container-high": "#dfe8ff",
+                        "on-secondary-fixed": "#0a1f18",
+                        "inverse-on-surface": "#ecf0ff",
+                        "on-error-container": "#93000a",
+                        "inverse-primary": "#b2c5ff",
+                        "surface-container-low": "#f0f3ff",
+                        "on-tertiary-fixed-variant": "#624000",
+                        "secondary-fixed-dim": "#b4ccc0",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-container": "#0052cc",
+                        "secondary-container": "#cfe8dc",
+                        "on-background": "#091c35",
+                        "on-surface-variant": "#434654",
+                        "on-surface": "#091c35",
+                        "on-primary": "#ffffff",
+                        "outline": "#737685",
+                        "secondary": "#4d6359",
+                        "on-secondary-fixed-variant": "#364b42",
+                        "on-primary-fixed": "#001848",
+                        "background": "#f9f9ff",
+                        "surface-tint": "#0c56d0",
+                        "inverse-surface": "#20314b",
+                        "tertiary-fixed-dim": "#ffb950",
+                        "surface-variant": "#d6e3ff",
+                        "surface": "#f9f9ff",
+                        "primary": "#003d9b",
+                        "secondary-fixed": "#cfe8dc",
+                        "tertiary-container": "#7d5200",
+                        "on-error": "#ffffff",
+                        "surface-container": "#e7eeff",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed": "#291800",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed-variant": "#0040a2",
+                        "surface-container-highest": "#d6e3ff",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-container": "#53695f"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "3xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "container-margin": "24px",
+                        "unit": "4px",
+                        "stack-md": "16px",
+                        "stack-sm": "8px",
+                        "section-gap": "40px",
+                        "stack-lg": "24px",
+                        "gutter": "16px"
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        :root {
+            --bg-color: #f9f9ff;
+            --text-color: #091c35;
+        }
+        html.dark {
+            --bg-color: #0b1120; /* Dark premium navy-slate background */
+            --text-color: #f8fafc;
+        }
+        html {
+            overflow-x: hidden;
+        }
+        body {
+            background-color: var(--bg-color);
+            font-family: 'Inter', sans-serif;
+            color: var(--text-color);
+            -webkit-font-smoothing: antialiased;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            overflow-x: hidden;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(235, 236, 240, 0.8);
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        html.dark .glass-card {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(51, 65, 85, 0.5);
+        }
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        .btn-press {
+            transition: transform 0.1s ease, background-color 0.2s ease;
+        }
+        .btn-press:active {
+            transform: scale(0.96);
+        }
+        /* Custom transitions for player illustration frames */
+        .illustration-frame {
+            transition: opacity 0.5s ease-in-out, transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            height: 4px;
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #003d9b;
+            border-radius: 10px;
+        }
+        
+        /* Premium Global Dark Mode Theme Overrides */
+        html.dark body {
+            color: #e2e8f0; /* slate-200 */
+        }
+        html.dark header, html.dark nav {
+            background-color: #0f172a !important; /* slate-900 */
+            border-color: #1e293b !important; /* slate-800 */
+            color: #f8fafc !important;
+        }
+        html.dark .bg-surface-container-low, 
+        html.dark .bg-surface-container-lowest,
+        html.dark .bg-surface-container-high {
+            background-color: #1e293b !important; /* slate-800 */
+            border-color: #334155 !important; /* slate-700 */
+            color: #f8fafc;
+        }
+        html.dark .text-on-surface,
+        html.dark h2, html.dark h3, html.dark h4, html.dark span.font-bold {
+            color: #f8fafc !important;
+        }
+        html.dark .text-on-surface-variant {
+            color: #94a3b8 !important; /* slate-400 */
+        }
+        html.dark .border-outline-variant, 
+        html.dark .border-outline-variant\/30, 
+        html.dark .border-outline-variant\/40, 
+        html.dark .border-outline-variant\/50,
+        html.dark .border-outline-variant\/60 {
+            border-color: #334155 !important; /* slate-700 */
+        }
+        html.dark .bg-white {
+            background-color: #0f172a !important; /* slate-900 */
+            border-color: #1e293b !important;
+        }
+        html.dark .bg-surface-container {
+            background-color: #0f172a !important;
+        }
+        html.dark .bg-surface-bright {
+            background-color: #0b1120 !important;
+        }
+        html.dark #onboarding-screen {
+            background-color: #0b1120 !important;
+        }
+        html.dark .bg-[#FFEB3B]\/20 {
+            background-color: rgba(234, 179, 8, 0.15) !important;
+            color: #fef08a !important;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen pb-20">
+
+    <!-- ONBOARDING SECTION (Shown overlay or main based on state) -->
+    <div id="onboarding-screen" class="fixed inset-0 bg-surface-bright z-[100] flex flex-col justify-between overflow-y-auto">
+        <header class="w-full top-0 py-stack-md px-container-margin flex justify-center items-center">
+            <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary" style="font-size: 28px;">clinical_notes</span>
+                <span class="font-bold text-xl text-primary">NeckCare</span>
+            </div>
+        </header>
+        <main class="flex-grow flex flex-col items-center justify-center px-container-margin py-stack-lg max-w-md mx-auto text-center">
+            <div class="relative w-72 h-72 mb-stack-lg flex items-center justify-center animate-float">
+                <div class="absolute inset-0 bg-primary-container/5 rounded-full blur-3xl"></div>
+                <img class="w-full h-full object-contain drop-shadow-xl rounded-2xl" 
+                     src="stitch_assets/images/01_onboarding_daea0b5684b547fe9115565fe7f39bfa.png" 
+                     alt="거북목 및 척추 바른정렬 3D 메디컬 가이드 일러스트"/>
+                <div class="absolute top-4 right-0 glass-card rounded-xl p-2.5 flex items-center gap-1.5 shadow-md">
+                    <span class="material-symbols-outlined text-[#4CAF50] text-[18px]">check_circle</span>
+                    <span class="text-xs font-semibold text-secondary">바른 정렬 케어</span>
+                </div>
+            </div>
+            <h1 class="font-bold text-2xl text-primary mb-stack-sm leading-snug">
+                바른 자세로 건강한 목과<br/>허리를 되찾으세요
+            </h1>
+            <p class="text-body-md text-on-surface-variant mb-stack-lg max-w-xs leading-relaxed">
+                임상 전문가가 검증한 멕켄지 운동과 견갑골 날개죽지 정렬 프로그램으로 통증 없는 건강한 일상을 지켜드립니다.
+            </p>
+            <button id="start-app-btn" class="btn-press w-full bg-primary hover:bg-primary-container text-on-primary py-4 rounded-xl font-semibold shadow-md flex items-center justify-center gap-2">
+                무료 코칭 시작하기
+                <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+            </button>
+        </main>
+        <footer class="py-stack-lg text-center opacity-60 flex flex-col items-center gap-2">
+            <div class="flex gap-2">
+                <div class="w-2 h-2 rounded-full bg-primary"></div>
+                <div class="w-2 h-2 rounded-full bg-outline-variant"></div>
+                <div class="w-2 h-2 rounded-full bg-outline-variant"></div>
+            </div>
+            <span class="text-xs text-outline tracking-wide uppercase">Orthopedic Wellness System</span>
+        </footer>
+    </div>
+
+    <!-- MAIN APP STRUCTURE -->
+    <header class="w-full top-0 sticky bg-surface-bright shadow-sm z-50 flex justify-between items-center px-container-margin py-stack-md">
+        <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary" style="font-size: 28px;">clinical_notes</span>
+            <span class="font-bold text-xl text-primary">NeckCare</span>
+        </div>
+        <div class="flex items-center gap-3">
+            <!-- Dark Mode Toggle Button -->
+            <button id="dark-mode-toggle" onclick="toggleDarkMode()" class="w-10 h-10 rounded-xl bg-surface-container-low border border-outline-variant/30 flex items-center justify-center text-on-surface-variant hover:text-primary transition-all btn-press">
+                <span id="dark-mode-icon" class="material-symbols-outlined text-[22px]">dark_mode</span>
+            </button>
+            <div class="text-right hidden sm:block">
+                <span class="block text-xs text-on-surface-variant font-medium">바른자세 메이트</span>
+                <span class="block text-sm font-semibold text-primary">김자세 님</span>
+            </div>
+            <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary/20 active:scale-95 duration-150 cursor-pointer flex items-center justify-center bg-gradient-to-br from-blue-500 to-indigo-600 shadow-md">
+                <svg viewBox="0 0 100 100" class="w-7 h-7 text-white" fill="currentColor">
+                    <circle cx="50" cy="35" r="20" fill="white" opacity="0.95"/>
+                    <path d="M50 60c-25 0-30 12-30 20v5h60v-5c0-8-5-20-30-20z" fill="white" opacity="0.85"/>
+                </svg>
+            </div>
+        </div>
+    </header>
+
+    <!-- TABS CONTAINER -->
+    <main class="max-w-4xl mx-auto px-container-margin mt-stack-lg flex-grow">
+        
+        <!-- 1. DASHBOARD TAB -->
+        <div id="tab-dashboard" class="tab-content space-y-6">
+            <!-- Top Grid: Today's Goal & Samoyed Pet -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Progress Section -->
+                <section class="bg-surface-container-low rounded-2xl p-stack-lg shadow-sm border border-outline-variant/30 flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-end">
+                            <div>
+                                <h2 class="text-lg font-bold text-on-surface">오늘의 스트레칭 목표</h2>
+                                <p class="text-xs text-on-surface-variant">훌륭해요! 오늘의 목표를 곧 완성합니다.</p>
+                            </div>
+                            <span class="text-2xl font-bold text-primary" id="dashboard-progress-percent">65%</span>
+                        </div>
+                        <div class="w-full bg-outline-variant/30 h-3.5 rounded-full overflow-hidden">
+                            <div id="dashboard-progress-bar" class="bg-primary h-full rounded-full transition-all duration-700" style="width: 65%;"></div>
+                        </div>
+                    </div>
+                    <div class="flex justify-between text-xs text-on-surface-variant mt-4 font-medium">
+                        <span>오늘 6회 중 <span id="dashboard-completed-count" class="text-primary font-bold">4회</span> 완료</span>
+                        <span id="dashboard-next-alarm-label">다음 정기 알림: 1시간 후</span>
+                    </div>
+                </section>
+
+                <!-- GM Kodari Section -->
+                <section class="bg-surface-container-low rounded-2xl p-stack-lg shadow-sm border border-outline-variant/30 relative overflow-hidden flex flex-col justify-between">
+                    <!-- Background Accent -->
+                    <div class="absolute -right-8 -bottom-8 opacity-10 text-[110px] material-symbols-outlined pointer-events-none">workspace_premium</div>
+                    
+                    <div class="flex gap-4 items-start z-10">
+                        <!-- Pet Image -->
+                        <div class="w-24 h-24 rounded-2xl overflow-hidden bg-white border border-outline-variant/20 shadow-inner flex-shrink-0 flex items-center justify-center relative group">
+                            <img id="pet-image" src="stitch_assets/images/female_therapist_salute.png" alt="자세 메이트 민지 코치" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"/>
+                            <div id="pet-stage-badge" class="absolute bottom-1 right-1 text-[8px] bg-primary text-on-primary px-1.5 py-0.5 rounded-md font-bold shadow-sm">1단계</div>
+                        </div>
+                        
+                        <!-- Pet Info and Speech Bubble -->
+                        <div class="space-y-1.5 flex-grow">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-sm font-bold text-on-surface flex items-center gap-1">
+                                    자세 메이트 <span id="pet-name" class="text-primary font-extrabold">민지</span>
+                                    <span id="pet-growth-badge" class="text-[10px] bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded-full font-bold">초보 메이트</span>
+                                </h3>
+                                <div class="flex items-center gap-2">
+                                    <span id="pet-completions-badge" class="text-[10px] text-on-surface-variant font-semibold">운동 0회</span>
+                                    <span id="pet-eggs-badge" class="text-[10px] text-yellow-600 dark:text-yellow-400 font-bold">🏅 칭찬 스티커 0개</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Speech bubble -->
+                            <div class="relative bg-white border border-outline-variant/30 rounded-xl p-2.5 text-xs text-on-surface shadow-sm leading-relaxed dark:bg-[#1e293b]">
+                                <!-- Speech arrow -->
+                                <div class="absolute top-3 -left-1.5 w-3 h-3 bg-white border-l border-b border-outline-variant/30 transform rotate-45 dark:bg-[#1e293b]"></div>
+                                <p id="pet-speech" class="relative z-10 font-medium">안녕하세요! 저와 함께 매일 바른 정렬 스트레칭을 시작해 볼까요? 🧘‍♀️</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Growth Progress Bar -->
+                    <div class="mt-4 space-y-1.5 z-10">
+                        <div class="flex justify-between text-[11px] text-on-surface-variant font-semibold">
+                            <span id="pet-growth-label">다음 단계까지 운동 5회 남음</span>
+                            <span id="pet-growth-percent">0%</span>
+                        </div>
+                        <div class="w-full bg-outline-variant/30 h-2 rounded-full overflow-hidden">
+                            <div id="pet-growth-bar" class="bg-primary h-full rounded-full transition-all duration-700" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Stretching Alarm Settings -->
+            <section class="bg-surface-container-lowest border border-outline-variant/50 rounded-2xl p-stack-lg shadow-sm space-y-4">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary">notifications_active</span>
+                        <h3 class="text-md font-bold text-on-surface">정기 스트레칭 알림 설정</h3>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="alarm-toggle" class="sr-only peer" onchange="toggleAlarmEnabled(this.checked)">
+                        <div class="w-11 h-6 bg-outline-variant/50 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                    </label>
+                </div>
+                <div id="alarm-settings-body" class="opacity-50 pointer-events-none transition-opacity duration-200 space-y-3">
+                    <p class="text-xs text-on-surface-variant leading-relaxed">
+                        설정하신 주기마다 목디스크 방지 및 스트레칭 알람을 전송합니다. 알림을 받으시려면 브라우저의 알림 권한 허용이 필요합니다.
+                    </p>
+                    <div class="flex items-center gap-3">
+                        <span class="text-xs font-semibold text-on-surface-variant">알림 간격:</span>
+                        <div class="flex bg-surface-container-low p-1 rounded-xl border border-outline-variant/30 gap-1">
+                            <button id="interval-15-btn" onclick="setAlarmInterval(15)" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all btn-press">15분</button>
+                            <button id="interval-30-btn" onclick="setAlarmInterval(30)" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all btn-press">30분</button>
+                            <button id="interval-60-btn" onclick="setAlarmInterval(60)" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all btn-press bg-primary text-on-primary shadow-sm">1시간</button>
+                        </div>
+                        <button onclick="testPushNotification()" class="ml-auto bg-secondary-container text-on-secondary-container border border-secondary px-3 py-1.5 rounded-xl text-xs font-semibold hover:bg-secondary/10 transition-colors btn-press">
+                            알림 테스트
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Diagnosis Banner -->
+            <section class="bg-primary text-on-primary rounded-2xl p-stack-lg shadow-md flex items-center justify-between relative overflow-hidden">
+                <div class="absolute -right-4 -bottom-6 opacity-10 text-[120px] material-symbols-outlined">camera</div>
+                <div class="z-10 max-w-[70%]">
+                    <span class="inline-block bg-white/20 text-xs px-2.5 py-1 rounded-full font-bold mb-2">실시간 AI 검사</span>
+                    <h3 class="text-lg font-bold mb-1">내 목 각도는 지금 안전할까?</h3>
+                    <p class="text-xs opacity-90 leading-relaxed">카메라로 5초만에 거북목 지수를 측정하고 커스텀 교정 루틴을 진단 받으세요.</p>
+                </div>
+                <button onclick="switchTab('analysis')" class="z-10 bg-white text-primary px-4 py-2.5 rounded-xl text-xs font-bold shadow-md hover:bg-surface-container-low transition-colors btn-press">
+                    진단하기
+                </button>
+            </section>
+
+            <!-- Featured Exercise Card: McKenzie -->
+            <section class="space-y-3">
+                <h3 class="text-lg font-bold text-on-surface px-1">추천 데일리 코칭</h3>
+                <div class="bg-surface-container-lowest border border-outline-variant/50 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                    <div class="grid grid-cols-1 md:grid-cols-2">
+                        <div class="relative h-64 md:h-full min-h-[220px] bg-gradient-to-br from-indigo-900 to-primary-container flex flex-col items-center justify-center p-6 text-white text-center w-full">
+                            <!-- Spine Align SVG illustration -->
+                            <svg viewBox="0 0 100 100" class="w-20 h-20 text-primary-fixed-dim mb-2.5 drop-shadow-lg" stroke="currentColor" fill="none" stroke-width="2.5">
+                                <path d="M 50 15 C 50 15, 48 30, 42 45 C 38 60, 48 80, 50 90" stroke-linecap="round"/>
+                                <rect x="47" y="18" width="6" height="4" rx="1.5" fill="currentColor"/>
+                                <rect x="45" y="27" width="8" height="4" rx="1.5" fill="currentColor"/>
+                                <rect x="42" y="36" width="9" height="4" rx="1.5" fill="currentColor"/>
+                                <rect x="39" y="45" width="10" height="4" rx="1.5" fill="currentColor"/>
+                                <rect x="39" y="55" width="10" height="4" rx="1.5" fill="currentColor"/>
+                                <rect x="41" y="65" width="11" height="4" rx="1.5" fill="currentColor"/>
+                                <rect x="44" y="75" width="12" height="4" rx="1.5" fill="currentColor"/>
+                                <circle cx="42" cy="45" r="14" stroke="#4CAF50" stroke-width="1.5" stroke-dasharray="3"/>
+                                <path d="M 20 45 L 30 45 M 26 40 L 30 45 L 26 50" stroke="#4CAF50" stroke-width="2"/>
+                            </svg>
+                            <span class="text-[10px] font-bold text-primary-fixed-dim uppercase tracking-widest">Cervical Alignment Program</span>
+                            <h5 class="text-sm font-extrabold mt-1">경추 C자선 복원 솔루션</h5>
+                            <div class="absolute top-4 left-4 bg-white/20 backdrop-blur-md text-white px-3 py-1 rounded-lg text-xs font-semibold tracking-wider">추천 강도: 상</div>
+                        </div>
+                        <div class="p-6 flex flex-col justify-between">
+                            <div>
+                                <span class="text-xs font-semibold text-primary uppercase tracking-wide">목디스크 임상 처방</span>
+                                <h4 class="text-xl font-bold text-on-surface mt-1 mb-2">거북목 교정 멕켄지 운동</h4>
+                                <p class="text-sm text-on-surface-variant mb-4 leading-relaxed">
+                                    <strong>날개죽지 모으기 동작이 보완된 최신 수련법</strong>입니다. 두 팔을 접어 등 뒤 날개뼈를 밀착시키며 턱을 당겨 목을 젖힘으로써 통증을 빠르게 가라앉힙니다.
+                                </p>
+                                <div class="space-y-2 mb-6">
+                                    <div class="flex items-center gap-2 text-xs font-medium text-on-surface">
+                                        <span class="material-symbols-outlined text-primary text-[18px]">check_circle</span>
+                                        <span>등 뒤 날개뼈(견갑골) 모으기 추가</span>
+                                    </div>
+                                    <div class="flex items-center gap-2 text-xs font-medium text-on-surface">
+                                        <span class="material-symbols-outlined text-primary text-[18px]">check_circle</span>
+                                        <span>안전한 C자형 경추 커브 확보</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button onclick="startExercisePlayer('mckenzie')" class="w-full bg-primary hover:bg-primary-container text-on-primary py-3 rounded-xl font-semibold transition-all btn-press flex items-center justify-center gap-2">
+                                <span class="material-symbols-outlined text-[20px]">play_circle</span>
+                                가이드 영상 실행하기
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+ 
+            <!-- Other Exercises Bento -->
+            <section class="space-y-3">
+                <div class="flex justify-between items-center px-1">
+                    <h3 class="text-lg font-bold text-on-surface">다음 추천 넥케어 루틴</h3>
+                    <span class="text-xs text-primary font-bold cursor-pointer hover:underline">전체보기</span>
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                    <!-- Card 1 -->
+                    <div onclick="startExercisePlayer('shoulder_squeeze')" class="bg-surface-container-lowest border border-outline-variant/40 rounded-xl p-3 hover:shadow-md transition-all cursor-pointer group">
+                        <div class="aspect-square bg-surface-container rounded-lg mb-2.5 overflow-hidden">
+                            <img alt="날개뼈 집중 수축" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="stitch_assets/images/10_shoulder_blade_squeeze_86c016391d8a4bf296808feda4932fe3.png"/>
+                        </div>
+                        <h4 class="text-sm font-semibold text-on-surface truncate">견갑골 후인-하강</h4>
+                        <div class="flex items-center gap-1 mt-1 text-[11px] text-on-surface-variant font-medium">
+                            <span class="material-symbols-outlined text-[14px]">schedule</span>
+                            <span>2분 • 피로회복</span>
+                        </div>
+                    </div>
+                    <!-- Card 2 -->
+                    <div onclick="startExercisePlayer('side_stretch')" class="bg-surface-container-lowest border border-outline-variant/40 rounded-xl p-3 hover:shadow-md transition-all cursor-pointer group">
+                        <div class="aspect-square bg-surface-container rounded-lg mb-2.5 overflow-hidden">
+                            <img alt="목 외측 사선 스트레칭" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="stitch_assets/images/11_neck_side_stretch_6a26e5d3e8b54e13b3fe148a1e42c797.png"/>
+                        </div>
+                        <h4 class="text-sm font-semibold text-on-surface truncate">사무실 넥 사이드 릴렉스</h4>
+                        <div class="flex items-center gap-1 mt-1 text-[11px] text-on-surface-variant font-medium">
+                            <span class="material-symbols-outlined text-[14px]">schedule</span>
+                            <span>3분 • 뭉침해소</span>
+                        </div>
+                    </div>
+                    <!-- Card 3 -->
+                    <div onclick="startExercisePlayer('doorway_chest')" class="bg-surface-container-lowest border border-outline-variant/40 rounded-xl p-3 hover:shadow-md transition-all cursor-pointer group">
+                        <div class="aspect-square bg-surface-container rounded-lg mb-2.5 overflow-hidden">
+                            <img alt="문틀 체스트 스트레칭" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="stitch_assets/images/12_doorway_chest_stretch_ea9b955651ec4f80a0771a0bf132da9a.png"/>
+                        </div>
+                        <h4 class="text-sm font-semibold text-on-surface truncate">문틀 흉근 개방</h4>
+                        <div class="flex items-center gap-1 mt-1 text-[11px] text-on-surface-variant font-medium">
+                            <span class="material-symbols-outlined text-[14px]">schedule</span>
+                            <span>3분 • 굽은등 펴기</span>
+                        </div>
+                    </div>
+                    <!-- Card 4 -->
+                    <div onclick="startExercisePlayer('standing_chin')" class="bg-surface-container-lowest border border-outline-variant/40 rounded-xl p-3 hover:shadow-md transition-all cursor-pointer group">
+                        <div class="aspect-square bg-surface-container rounded-lg mb-2.5 overflow-hidden">
+                            <img alt="온보딩 자세" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="stitch_assets/images/09_mckenzie_standing_eeea8a2761e44a108b9ce7668606b973.png"/>
+                        </div>
+                        <h4 class="text-sm font-semibold text-on-surface truncate">스탠딩 턱 코칭</h4>
+                        <div class="flex items-center gap-1 mt-1 text-[11px] text-on-surface-variant font-medium">
+                            <span class="material-symbols-outlined text-[14px]">schedule</span>
+                            <span>1.5분 • 자세교정</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- 2. EXERCISE ANIMATION PLAYER TAB -->
+        <div id="tab-exercise" class="tab-content hidden space-y-6">
+            <div class="flex items-center gap-3">
+                <button onclick="switchTab('dashboard')" class="w-9 h-9 rounded-full bg-outline-variant/20 hover:bg-outline-variant/35 flex items-center justify-center transition-colors">
+                    <span class="material-symbols-outlined text-on-surface">arrow_back</span>
+                </button>
+                <div>
+                    <h2 class="text-xl font-bold text-on-surface">맥켄지 코칭 비디오 플레이어</h2>
+                    <p class="text-xs text-on-surface-variant">정확한 날개죽지 밀착 자세와 리듬에 맞춰 함께 진행하세요.</p>
+                </div>
+            </div>
+
+            <!-- Video Player Display Container -->
+            <div class="bg-surface-container-lowest border border-outline-variant/50 rounded-2xl overflow-hidden shadow-lg">
+                <!-- Video Screen -->
+                <div class="relative w-full aspect-video bg-black flex items-center justify-center overflow-hidden">
+                    
+                    <!-- Step Guide Image Container (Default view) -->
+                    <div id="player-image-container" class="absolute inset-0 w-full h-full flex items-center justify-center bg-slate-950">
+                        <img id="player-step-img" class="w-full h-full object-contain" src="" alt="Guide Illustration"/>
+                    </div>
+
+                    <!-- 3D Mannequin Canvas Container (Hidden by default) -->
+                    <div id="player-frame-container" class="absolute inset-0 w-full h-full flex items-center justify-center hidden">
+                        <canvas id="three-player-canvas" class="w-full h-full"></canvas>
+                    </div>
+
+                    <!-- 3D Interaction Guide Overlay (Hidden by default) -->
+                    <div id="player-3d-overlay" class="absolute top-4 left-4 z-20 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full flex items-center gap-1.5 text-[10px] text-white/90 font-medium border border-white/10 pointer-events-none select-none hidden">
+                        <span class="material-symbols-outlined text-[13px] text-primary-fixed-dim animate-spin" style="animation-duration: 4s;">sync</span>
+                        <span>마우스 드래그로 3D 캐릭터 360도 회전 관찰 가능</span>
+                    </div>
+
+                    <!-- Ambient Glowing Backdrop Blur -->
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none"></div>
+
+                    <!-- TTS & BGM Sound Settings -->
+                    <div class="absolute top-4 right-4 z-20 flex items-center gap-2">
+                        <!-- View Mode Toggle Button -->
+                        <button id="player-view-mode-btn" onclick="togglePlayerViewMode()" class="h-10 px-3.5 rounded-full bg-black/60 hover:bg-black/80 flex items-center gap-1.5 text-white transition-colors text-xs font-semibold" title="화면 모드 전환">
+                            <span id="player-view-mode-icon" class="material-symbols-outlined text-[18px]">3d_rotation</span>
+                            <span id="player-view-mode-label">3D 캐릭터 보기</span>
+                        </button>
+
+                        <!-- TTS Voice Toggle -->
+                        <button id="player-sound-btn" onclick="toggleSound()" class="w-10 h-10 rounded-full bg-black/60 hover:bg-black/80 flex items-center justify-center text-white transition-colors" title="목소리 안내 온/오프">
+                            <span id="player-sound-icon" class="material-symbols-outlined text-[20px]">volume_up</span>
+                        </button>
+                        
+                        <!-- BGM Selector Button and Dropdown -->
+                        <div class="relative">
+                            <button id="player-bgm-btn" onclick="toggleBgmDropdown()" class="h-10 px-3.5 rounded-full bg-black/60 hover:bg-black/80 flex items-center gap-1.5 text-white transition-colors text-xs font-semibold">
+                                <span class="material-symbols-outlined text-[18px]">music_note</span>
+                                <span id="current-bgm-label">BGM: 끄기</span>
+                            </button>
+                            <!-- BGM Dropdown Menu -->
+                            <div id="bgm-dropdown" class="hidden absolute right-0 mt-2 w-48 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-outline-variant/30 rounded-xl shadow-lg py-1.5 z-30 transition-all duration-200">
+                                <button onclick="selectBgm('off')" class="w-full text-left px-4 py-2 text-xs hover:bg-primary/10 text-on-surface dark:text-white flex items-center gap-2 font-medium">
+                                    <span class="material-symbols-outlined text-[16px]">music_off</span> BGM 끄기
+                                </button>
+                                <button onclick="selectBgm('saemaul')" class="w-full text-left px-4 py-2 text-xs hover:bg-primary/10 text-on-surface dark:text-white flex items-center gap-2 font-medium">
+                                    <span class="material-symbols-outlined text-[16px]">agriculture</span> 새마을운동 노래
+                                </button>
+                                <button onclick="selectBgm('bird')" class="w-full text-left px-4 py-2 text-xs hover:bg-primary/10 text-on-surface dark:text-white flex items-center gap-2 font-medium">
+                                    <span class="material-symbols-outlined text-[16px]">nature_people</span> 새소리 BGM
+                                </button>
+                                <button onclick="selectBgm('rain')" class="w-full text-left px-4 py-2 text-xs hover:bg-primary/10 text-on-surface dark:text-white flex items-center gap-2 font-medium">
+                                    <span class="material-symbols-outlined text-[16px]">rainy</span> 빗소리 BGM
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Screen Overlays: Timer / Countdowns -->
+                    <div class="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+                        <div id="player-big-timer" class="text-7xl font-extrabold text-white drop-shadow-[0_4px_8px_rgba(0,0,0,0.6)] scale-90 opacity-0 transition-all duration-300">5</div>
+                        <div id="player-complete-overlay" class="absolute inset-0 bg-primary/95 flex flex-col items-center justify-center text-white p-6 opacity-0 pointer-events-none transition-all duration-500">
+                            <!-- Compliment Sticker Display -->
+                            <div id="egg-lay-display" class="hidden flex flex-col items-center mb-3">
+                                <img src="https://raw.githubusercontent.com/wonseokjung/solopreneur-ai-agents/main/agents/kodari/assets/kodari_success.png" class="w-20 h-20 object-contain animate-bounce drop-shadow-[0_0_15px_rgba(255,215,0,0.8)]"/>
+                                <span class="text-xs bg-yellow-500 text-on-primary px-2.5 py-0.5 rounded-full font-bold mt-2 shadow-md animate-pulse">🏅 칭찬 스티커 획득!</span>
+                            </div>
+                            <!-- Pet Display in Completion Overlay -->
+                            <div id="player-complete-pet-display" class="flex flex-col items-center mb-3">
+                                <div class="w-16 h-16 bg-white/10 rounded-full border border-white/20 flex items-center justify-center overflow-hidden mb-1 relative animate-float">
+                                    <img id="player-complete-pet-image" src="stitch_assets/images/golden_goose_1.png" class="w-full h-full object-cover"/>
+                                </div>
+                                <span id="player-complete-pet-text" class="text-[10px] bg-white/20 text-white px-2.5 py-0.5 rounded-full font-semibold">아기 황금거위 골디</span>
+                            </div>
+                            <h3 class="text-2xl font-bold mb-1">코칭 운동 완료!</h3>
+                            <p id="complete-overlay-desc" class="text-sm opacity-90 mb-6">목과 허리 디스크 압력이 안전하게 완화되었습니다.</p>
+                            <button onclick="completeExercise()" class="bg-white text-primary px-6 py-3 rounded-xl font-bold hover:bg-surface-container-low transition-colors btn-press pointer-events-auto shadow-md">
+                                대시보드로 기록 저장
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Video Controls Overlay -->
+                    <div id="player-controls-overlay" class="absolute bottom-0 left-0 w-full p-4 z-20 flex flex-col gap-2">
+                        <!-- Scrubber Track -->
+                        <div class="flex items-center gap-3">
+                            <span id="player-time-current" class="text-[11px] text-white/90 font-mono font-medium">00:00</span>
+                            <div class="flex-grow h-1.5 bg-white/30 rounded-full relative overflow-hidden cursor-pointer" onclick="scrubTimeline(event)">
+                                <div id="player-progress-bar" class="absolute top-0 left-0 bg-primary h-full rounded-full transition-all duration-100" style="width: 0%;"></div>
+                            </div>
+                            <span id="player-time-total" class="text-[11px] text-white/90 font-mono font-medium">00:32</span>
+                        </div>
+
+                        <!-- Button Controls -->
+                        <div class="flex items-center justify-between mt-1">
+                            <div class="flex items-center gap-4">
+                                <button onclick="prevStep()" class="text-white hover:text-primary-fixed-dim transition-colors">
+                                    <span class="material-symbols-outlined text-[24px]">skip_previous</span>
+                                </button>
+                                <button id="player-play-btn" onclick="togglePlay()" class="w-12 h-12 rounded-full bg-white text-primary hover:bg-primary-fixed flex items-center justify-center transition-all transform hover:scale-105 shadow-md active:scale-95">
+                                    <span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+                                </button>
+                                <button onclick="nextStep()" class="text-white hover:text-primary-fixed-dim transition-colors">
+                                    <span class="material-symbols-outlined text-[24px]">skip_next</span>
+                                </button>
+                                <button onclick="restartPlayer()" class="text-white/80 hover:text-white transition-colors">
+                                    <span class="material-symbols-outlined text-[20px]">replay</span>
+                                </button>
+                            </div>
+                            <div class="flex items-center gap-1.5 bg-black/40 px-3 py-1.5 rounded-full backdrop-blur-sm border border-white/10">
+                                <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                                <span id="player-status-tag" class="text-[10px] text-white font-semibold uppercase tracking-wider">준비 자세</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Subtitles / Text Guide Box -->
+                <div class="bg-surface-container-low p-5 border-t border-outline-variant/30 flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary shrink-0">
+                        <span id="player-step-icon" class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 1;">info</span>
+                    </div>
+                    <div class="space-y-1">
+                        <span id="player-step-title" class="text-xs font-bold text-primary tracking-wide">준비 단계 (6초)</span>
+                        <h4 id="player-step-desc" class="text-base font-bold text-on-surface leading-snug">의자에 엉덩이를 깊숙이 밀착하고 척추를 곧게 폅니다.</h4>
+                        <p id="player-step-tip" class="text-xs text-on-surface-variant leading-relaxed">어깨의 힘을 빼고 가슴을 편 뒤, 시선은 정면을 향해주세요.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="player-pet-cheer" class="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-4 shadow-sm flex items-center gap-3.5">
+                <div class="w-12 h-12 bg-white border border-outline-variant/20 rounded-xl flex-shrink-0 flex items-center justify-center relative overflow-hidden shadow-inner">
+                    <img id="player-pet-image" src="stitch_assets/images/female_therapist_salute.png" class="w-full h-full object-cover transition-transform duration-500 animate-float"/>
+                </div>
+                <div class="flex-grow">
+                    <div class="flex items-center gap-1.5 mb-0.5">
+                        <span class="text-xs font-extrabold text-primary">민지 코치의 자세 응원</span>
+                        <span id="player-pet-badge" class="text-[9px] bg-secondary-container text-on-secondary-container px-1.5 py-0.5 rounded-full font-bold">초보 메이트</span>
+                    </div>
+                    <p id="player-pet-speech" class="text-xs text-on-surface font-medium">바른 자세로 저와 함께 시원하게 몸을 깨워 봐요! 🧘‍♀️</p>
+                </div>
+            </div>
+
+            <!-- Steps list grid -->
+            <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-5 shadow-sm space-y-4">
+                <h3 class="text-md font-bold text-on-surface">운동 단계별 가이드라인</h3>
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-3" id="player-steps-grid">
+                    <!-- Step 1 Card -->
+                    <div onclick="jumpToStep(0)" class="border-2 border-primary/20 bg-primary/5 rounded-xl p-3.5 cursor-pointer hover:bg-primary/10 transition-colors text-left relative" id="grid-step-0">
+                        <span class="absolute top-3 right-3 text-[10px] bg-primary text-on-primary px-1.5 py-0.5 rounded font-bold">1</span>
+                        <h4 class="text-xs font-bold text-primary mb-1">준비 자세</h4>
+                        <p class="text-[11px] text-on-surface-variant leading-tight">바르게 앉기</p>
+                    </div>
+                    <!-- Step 2 Card -->
+                    <div onclick="jumpToStep(1)" class="border border-outline-variant/60 rounded-xl p-3.5 cursor-pointer hover:bg-primary/5 transition-colors text-left relative" id="grid-step-1">
+                        <span class="absolute top-3 right-3 text-[10px] bg-outline-variant text-on-surface px-1.5 py-0.5 rounded font-bold">2</span>
+                        <h4 class="text-xs font-bold text-on-surface mb-1">날개뼈 수축</h4>
+                        <p class="text-[11px] text-on-surface-variant leading-tight">날개죽지 밀착</p>
+                    </div>
+                    <!-- Step 3 Card -->
+                    <div onclick="jumpToStep(2)" class="border border-outline-variant/60 rounded-xl p-3.5 cursor-pointer hover:bg-primary/5 transition-colors text-left relative" id="grid-step-2">
+                        <span class="absolute top-3 right-3 text-[10px] bg-outline-variant text-on-surface px-1.5 py-0.5 rounded font-bold">3</span>
+                        <h4 class="text-xs font-bold text-on-surface mb-1">턱 당기기</h4>
+                        <p class="text-[11px] text-on-surface-variant leading-tight">수평으로 당김</p>
+                    </div>
+                    <!-- Step 4 Card -->
+                    <div onclick="jumpToStep(3)" class="border border-outline-variant/60 rounded-xl p-3.5 cursor-pointer hover:bg-primary/5 transition-colors text-left relative" id="grid-step-3">
+                        <span class="absolute top-3 right-3 text-[10px] bg-outline-variant text-on-surface px-1.5 py-0.5 rounded font-bold">4</span>
+                        <h4 class="text-xs font-bold text-on-surface mb-1">목 뒤로 젖히기</h4>
+                        <p class="text-[11px] text-on-surface-variant leading-tight">C자 커브 확장</p>
+                    </div>
+                    <!-- Step 5 Card -->
+                    <div onclick="jumpToStep(4)" class="border border-outline-variant/60 rounded-xl p-3.5 cursor-pointer hover:bg-primary/5 transition-colors text-left relative" id="grid-step-4">
+                        <span class="absolute top-3 right-3 text-[10px] bg-outline-variant text-on-surface px-1.5 py-0.5 rounded font-bold">5</span>
+                        <h4 class="text-xs font-bold text-on-surface mb-1">천천히 원위치</h4>
+                        <p class="text-[11px] text-on-surface-variant leading-tight">정면 복귀</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. AI POSTURE DIAGNOSIS TAB -->
+        <div id="tab-analysis" class="tab-content hidden space-y-6">
+            <div>
+                <h2 class="text-xl font-bold text-on-surface">실시간 AI 목 정렬 분석</h2>
+                <p class="text-xs text-on-surface-variant">카메라를 통해 머리와 어깨선을 매핑하여 현재 경추 상태를 정밀 진단합니다.</p>
+            </div>
+
+            <!-- AI Measurement Guide Card -->
+            <div class="bg-surface-container-low border border-outline-variant/40 rounded-2xl p-5 shadow-sm space-y-3.5">
+                <div class="flex items-center gap-2 text-primary font-bold text-sm">
+                    <span class="material-symbols-outlined text-[18px]">help_center</span>
+                    <span>AI 자세 측정 조작 및 정확도 안내</span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs leading-relaxed text-on-surface-variant">
+                    <div class="space-y-2">
+                        <p class="font-semibold text-on-surface">📌 AI 자세 측정 순서</p>
+                        <ul class="list-decimal pl-4 space-y-1 text-on-surface-variant">
+                            <li><strong class="text-on-surface">카메라 켜기</strong>: 하단의 <strong>[카메라 시작]</strong> 버튼을 눌러 비디오를 활성화합니다.</li>
+                            <li><strong class="text-on-surface">자세 측정 시작</strong>: 화면에 파란색 AI 관절 포인트가 매핑되면 활성화되는 <strong>[5초 정적 자세 분석]</strong> 버튼을 누릅니다.</li>
+                            <li><strong class="text-on-surface">5초 유지 및 완료</strong>: 5초 카운트다운 동안 정면을 보고 곧은 자세를 유지하면 분석이 자동 완료되어 기록이 저장됩니다.</li>
+                            <li><strong class="text-on-surface">종료</strong>: 측정이 끝난 후 <strong>[카메라 중지]</strong>를 눌러 카메라를 꺼 줍니다.</li>
+                        </ul>
+                    </div>
+                    <div class="space-y-2">
+                        <p class="font-semibold text-on-surface">🔍 정확도 및 정밀도 안내</p>
+                        <p class="text-on-surface-variant">
+                            본 서비스는 어깨와 귀의 상대적 각도(Craniovertebral Angle)를 감지합니다. 보다 신뢰할 수 있는 정확한 측정 결과를 얻으려면:
+                        </p>
+                        <ul class="list-disc pl-4 space-y-1 text-on-surface-variant">
+                            <li><strong>정확한 90도 옆모습</strong>: 카메라가 얼굴의 완전한 옆면과 어깨선을 왜곡 없이 정면으로 비추도록 설치해야 정확합니다.</li>
+                            <li><strong>수동 보정 기능 활용</strong>: 조명이나 머리카락 등으로 인해 AI 좌표가 조금 어긋난 경우, <strong>[수동 보정]</strong> 모드를 눌러 화면의 파란색 점을 내 귀와 어깨 중심에 직접 마우스로 드래그하여 정확하게 맞출 수 있습니다.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Camera module card -->
+                <div class="md:col-span-2 bg-surface-container-lowest border border-outline-variant/60 rounded-2xl overflow-hidden shadow-md">
+                    <div class="relative w-full aspect-video bg-black flex items-center justify-center">
+                        
+                        <!-- Webcam Element -->
+                        <video id="webcam-preview" class="w-full h-full object-cover hidden" autoplay playsinline muted></video>
+                        
+                        <!-- Camera Placeholder Image with scanline overlay -->
+                        <div id="webcam-placeholder" class="absolute inset-0 flex items-center justify-center bg-cover bg-center" style="background-image: url('stitch_assets/images/04_posture_analysis_ai_c35ab18c12ea446f96f08ef92a68cf7a.png');">
+                            <div class="absolute inset-0 bg-black/40"></div>
+                            <div id="scan-bar" class="absolute left-0 w-full h-1 bg-red-500 opacity-80" style="top: 0%; transition: top 0.1s linear;"></div>
+                        </div>
+
+                        <!-- Real-time SVG Canvas overlay for posture landmarks -->
+                        <svg id="posture-svg" class="absolute inset-0 w-full h-full" viewBox="0 0 640 360" style="touch-action: none;">
+                            <!-- Draw lines and angles via JS -->
+                        </svg>
+
+                        <!-- Scanning effect banner -->
+                        <div id="scanning-alert" class="absolute top-4 left-4 bg-primary/95 text-on-primary px-3.5 py-1.5 rounded-full flex items-center gap-2 text-xs font-bold shadow-md opacity-0 transition-opacity duration-300">
+                            <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping"></span>
+                            <span id="scanning-status-text">AI 분석 준비 완료</span>
+                        </div>
+                    </div>
+
+                    <div class="p-5 border-t border-outline-variant/30 flex flex-wrap items-center justify-between gap-4">
+                        <div class="flex items-center gap-3">
+                            <button id="start-camera-btn" onclick="startCamera()" class="bg-primary text-on-primary px-5 py-3 rounded-xl text-sm font-semibold hover:bg-primary-container transition-colors btn-press flex items-center gap-2">
+                                <span class="material-symbols-outlined">videocam</span>
+                                카메라 시작
+                            </button>
+                            <button id="capture-posture-btn" onclick="capturePosture()" class="bg-secondary-container text-on-secondary-container border border-secondary px-5 py-3 rounded-xl text-sm font-semibold hover:bg-secondary/10 transition-colors btn-press hidden">
+                                5초 정적 자세 분석
+                            </button>
+                        </div>
+                        <div id="detection-mode-container" class="hidden flex items-center bg-surface-container p-1 rounded-xl border border-outline-variant/30 gap-1">
+                            <button id="mode-ai-btn" onclick="setDetectionMode('ai')" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-primary text-on-primary shadow-sm transition-all btn-press">AI 자동</button>
+                            <button id="mode-manual-btn" onclick="setDetectionMode('manual')" class="px-3 py-1.5 rounded-lg text-xs font-bold text-on-surface-variant transition-all btn-press">수동 보정</button>
+                        </div>
+                        <span id="diagnosis-timer" class="text-lg font-bold font-mono text-primary hidden">00:05</span>
+                    </div>
+                </div>
+
+                <!-- Report Panel -->
+                <div class="bg-surface-container-low rounded-2xl p-5 border border-outline-variant/40 shadow-sm flex flex-col justify-between min-h-[350px]">
+                    <div>
+                        <div class="flex justify-between items-center mb-3 pb-2 border-b border-outline-variant/30">
+                            <h3 class="text-md font-bold text-on-surface">포스처 리포트</h3>
+                            <span id="analysis-view-badge" class="text-[10px] bg-primary/10 text-primary px-2.5 py-0.5 rounded-full font-bold">감지 대기 중</span>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <!-- Side View Section (Neck & Turtle) -->
+                            <div id="report-side-view" class="space-y-4">
+                                <!-- Metric 1 -->
+                                <div class="bg-white rounded-xl p-3.5 border border-outline-variant/20 shadow-sm dark:bg-[#1e293b]">
+                                    <div class="flex justify-between items-center mb-1">
+                                        <span class="text-xs font-bold text-on-surface-variant">경추 굴곡 각도 (Craniovertebral)</span>
+                                        <span id="analysis-angle" class="text-sm font-bold text-[#FF5722]">-</span>
+                                    </div>
+                                    <div class="w-full bg-outline-variant/30 h-2 rounded-full overflow-hidden">
+                                        <div id="analysis-angle-bar" class="bg-[#FF5722] h-full rounded-full transition-all duration-500" style="width: 0%;"></div>
+                                    </div>
+                                    <p class="text-[10px] text-on-surface-variant mt-1.5" id="analysis-angle-desc">카메라 정면에서 측정해주세요.</p>
+                                </div>
+                                <!-- Metric 2 -->
+                                <div class="bg-white rounded-xl p-3.5 border border-outline-variant/20 shadow-sm dark:bg-[#1e293b]">
+                                    <div class="flex justify-between items-center mb-1">
+                                        <span class="text-xs font-bold text-on-surface-variant">거북목 교정 필요 지수</span>
+                                        <span id="analysis-turtle-score" class="text-sm font-bold text-primary">-</span>
+                                    </div>
+                                    <div class="w-full bg-outline-variant/30 h-2 rounded-full overflow-hidden">
+                                        <div id="analysis-turtle-bar" class="bg-primary h-full rounded-full transition-all duration-500" style="width: 0%;"></div>
+                                    </div>
+                                    <p class="text-[10px] text-on-surface-variant mt-1.5" id="analysis-turtle-desc">정면 측정을 시작해주세요.</p>
+                                </div>
+                            </div>
+
+                            <!-- Front View Section (Full-body Balance) -->
+                            <div id="report-front-view" class="space-y-4 hidden">
+                                <!-- Metric 3: Shoulder Balance -->
+                                <div class="bg-white rounded-xl p-3.5 border border-outline-variant/20 shadow-sm dark:bg-[#1e293b]">
+                                    <div class="flex justify-between items-center mb-1">
+                                        <span class="text-xs font-bold text-on-surface-variant">좌우 어깨 대칭도</span>
+                                        <span id="analysis-shoulder-balance" class="text-sm font-bold text-[#4CAF50]">-</span>
+                                    </div>
+                                    <div class="w-full bg-outline-variant/30 h-2 rounded-full overflow-hidden">
+                                        <div id="analysis-shoulder-bar" class="bg-[#4CAF50] h-full rounded-full transition-all duration-500" style="width: 0%;"></div>
+                                    </div>
+                                    <p class="text-[10px] text-on-surface-variant mt-1.5" id="analysis-shoulder-desc">좌우 어깨 높이가 대칭일 때 100점에 가깝습니다.</p>
+                                </div>
+                                <!-- Metric 4: Pelvic/Waist Balance -->
+                                <div class="bg-white rounded-xl p-3.5 border border-outline-variant/20 shadow-sm dark:bg-[#1e293b]">
+                                    <div class="flex justify-between items-center mb-1">
+                                        <span class="text-xs font-bold text-on-surface-variant">골반/허리 정렬도</span>
+                                        <span id="analysis-pelvic-balance" class="text-sm font-bold text-primary">-</span>
+                                    </div>
+                                    <div class="w-full bg-outline-variant/30 h-2 rounded-full overflow-hidden">
+                                        <div id="analysis-pelvic-bar" class="bg-primary h-full rounded-full transition-all duration-500" style="width: 0%;"></div>
+                                    </div>
+                                    <p class="text-[10px] text-on-surface-variant mt-1.5" id="analysis-pelvic-desc">골반의 수평 높이가 대칭일 때 100점에 가깝습니다.</p>
+                                </div>
+                                <!-- Metric 5: Knee Balance -->
+                                <div class="bg-white rounded-xl p-3.5 border border-outline-variant/20 shadow-sm dark:bg-[#1e293b]">
+                                    <div class="flex justify-between items-center mb-1">
+                                        <span class="text-xs font-bold text-on-surface-variant">좌우 무릎 정렬도</span>
+                                        <span id="analysis-knee-balance" class="text-sm font-bold text-primary">-</span>
+                                    </div>
+                                    <div class="w-full bg-outline-variant/30 h-2 rounded-full overflow-hidden">
+                                        <div id="analysis-knee-bar" class="bg-primary h-full rounded-full transition-all duration-500" style="width: 0%;"></div>
+                                    </div>
+                                    <p class="text-[10px] text-on-surface-variant mt-1.5" id="analysis-knee-desc">좌우 무릎의 위치가 고를수록 좋습니다.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 pt-4 border-t border-outline-variant/30 space-y-2">
+                        <div class="flex items-center gap-2 bg-[#FFEB3B]/20 text-yellow-900 p-3 rounded-xl text-xs leading-relaxed font-semibold">
+                            <span class="material-symbols-outlined text-[20px] text-yellow-800">warning</span>
+                            <span id="analysis-warning-text">측정 중 화면 옆에 정렬 가이드 라인이 표시됩니다.</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- GM Therapist Analysis Companion -->
+                <div id="analysis-pet-cheer" class="bg-surface-container-low border border-outline-variant/40 rounded-2xl p-4 shadow-sm flex items-center gap-3.5 mt-4">
+                    <div class="w-12 h-12 bg-white rounded-xl border border-outline-variant/20 flex-shrink-0 flex items-center justify-center relative overflow-hidden shadow-inner">
+                        <img id="analysis-pet-image" src="stitch_assets/images/female_therapist_salute.png" class="w-full h-full object-cover"/>
+                    </div>
+                    <div class="flex-grow">
+                        <div class="flex items-center gap-1.5 mb-0.5">
+                            <span class="text-xs font-extrabold text-primary">민지 코치의 자세 분석</span>
+                            <span id="analysis-pet-badge" class="text-[9px] bg-secondary-container text-on-secondary-container px-1.5 py-0.5 rounded-full font-bold">초보 메이트</span>
+                        </div>
+                        <p id="analysis-pet-speech" class="text-xs text-on-surface font-medium">카메라를 켜서 자세 정렬 상태를 분석해 드릴게요! 🧘‍♀️</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. PROFILE TAB -->
+        <div id="tab-profile" class="tab-content hidden space-y-6">
+            <div>
+                <h2 class="text-xl font-bold text-on-surface">마이 프로필 및 통계</h2>
+                <p class="text-xs text-on-surface-variant">자세 개선 습관 통계와 이력을 확인하고 처방 레포트를 확인하세요.</p>
+            </div>
+
+            <!-- Stats grid -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-4 text-center">
+                    <span class="text-xs font-medium text-on-surface-variant">누적 스트레칭 횟수</span>
+                    <span class="block text-3xl font-extrabold text-primary mt-1.5" id="profile-total-count">24회</span>
+                </div>
+                <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-4 text-center">
+                    <span class="text-xs font-medium text-on-surface-variant">최근 평균 목 각도</span>
+                    <span class="block text-3xl font-extrabold text-[#FF5722] mt-1.5" id="profile-avg-angle">48.2°</span>
+                </div>
+                <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-4 text-center">
+                    <span class="text-xs font-medium text-on-surface-variant">이번 주 출석일수</span>
+                    <span class="block text-3xl font-extrabold text-[#4CAF50] mt-1.5" id="profile-attendance-days">5일</span>
+                </div>
+                <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-4 text-center">
+                    <span class="text-xs font-medium text-on-surface-variant">획득한 칭찬 스티커 🏅</span>
+                    <span class="block text-3xl font-extrabold text-[#FFC107] mt-1.5" id="profile-golden-eggs">0개</span>
+                </div>
+            </div>
+
+            <!-- GM Therapist Status Card in Profile -->
+            <div id="profile-pet-diary" class="bg-surface-container-lowest border border-outline-variant/50 rounded-2xl p-5 shadow-sm space-y-4">
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[#FFC107]">emoji_events</span>
+                    <h3 class="text-md font-bold text-on-surface">민지 코치의 성장 다이어리</h3>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-5 items-center">
+                    <div class="w-24 h-24 bg-white border border-outline-variant/30 rounded-2xl flex items-center justify-center relative overflow-hidden shadow-inner shrink-0">
+                        <img id="profile-pet-image" src="stitch_assets/images/female_therapist_salute.png" class="w-full h-full object-cover transition-transform duration-500"/>
+                        <div id="profile-pet-stage-badge" class="absolute bottom-1 right-1 text-[8px] bg-primary text-on-primary px-1.5 py-0.5 rounded font-bold">1단계</div>
+                    </div>
+                    <div class="space-y-1.5 flex-grow text-center sm:text-left w-full">
+                        <h4 class="text-sm font-bold text-on-surface">
+                            <span id="profile-pet-name" class="text-primary font-extrabold">민지 코치</span>는 현재 
+                            <span id="profile-pet-growth-text" class="text-[#FF9800] font-extrabold">초보 메이트</span> 상태입니다!
+                        </h4>
+                        <p id="profile-pet-desc" class="text-xs text-on-surface-variant leading-relaxed">
+                            운동을 시작하면 민지 코치의 숙련 레벨이 상승합니다. 운동 5회를 완료하여 자세 케어 마스터가 되면, 매 운동 완료 시마다 칭찬 스티커를 부여받습니다!
+                        </p>
+                        <div class="pt-1">
+                            <div class="flex justify-between text-[10px] text-on-surface-variant font-bold mb-1">
+                                <span id="profile-pet-progress-label">자세 마스터까지 운동 5회 필요</span>
+                                <span id="profile-pet-progress-percent">0%</span>
+                            </div>
+                            <div class="w-full bg-outline-variant/30 h-2 rounded-full overflow-hidden">
+                                <div id="profile-pet-progress-bar" class="bg-[#FF9800] h-full rounded-full transition-all duration-700" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Weekly chart mockup -->
+            <div class="bg-surface-container-lowest border border-outline-variant/50 rounded-2xl p-5 shadow-sm space-y-4">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-md font-bold text-on-surface">주간 평균 경추 정렬 각도 추이</h3>
+                    <span class="text-xs text-on-surface-variant font-medium">단위: 도(°) • 매주 일요일 업데이트</span>
+                </div>
+                <!-- Simple bar chart -->
+                <div class="flex items-end justify-between h-48 pt-4 px-4 border-b border-outline-variant/30">
+                    <div class="flex flex-col items-center gap-2 w-1/7">
+                        <div class="w-8 bg-outline-variant/40 rounded-t-lg transition-all duration-500" style="height: 120px;"></div>
+                        <span class="text-[11px] text-on-surface-variant font-semibold">월</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-2 w-1/7">
+                        <div class="w-8 bg-outline-variant/40 rounded-t-lg transition-all duration-500" style="height: 110px;"></div>
+                        <span class="text-[11px] text-on-surface-variant font-semibold">화</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-2 w-1/7">
+                        <div class="w-8 bg-outline-variant/40 rounded-t-lg transition-all duration-500" style="height: 130px;"></div>
+                        <span class="text-[11px] text-on-surface-variant font-semibold">수</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-2 w-1/7">
+                        <div class="w-8 bg-primary/70 rounded-t-lg transition-all duration-500" style="height: 140px;"></div>
+                        <span class="text-[11px] text-on-surface-variant font-semibold">목</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-2 w-1/7">
+                        <div class="w-8 bg-primary/80 rounded-t-lg transition-all duration-500" style="height: 150px;"></div>
+                        <span class="text-[11px] text-on-surface-variant font-semibold">금</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-2 w-1/7">
+                        <div class="w-8 bg-primary rounded-t-lg transition-all duration-500" style="height: 162px;"></div>
+                        <span class="text-[11px] text-on-surface-variant font-semibold">토</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-2 w-1/7">
+                        <div class="w-8 bg-primary rounded-t-lg transition-all duration-500" style="height: 170px;" id="chart-today-bar"></div>
+                        <span class="text-[11px] text-primary font-bold">일(오늘)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- History Log Section -->
+            <div class="bg-surface-container-lowest border border-outline-variant/50 rounded-2xl p-5 shadow-sm space-y-4">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-md font-bold text-on-surface">자세 개선 및 스트레칭 히스토리</h3>
+                    <button onclick="clearHistory()" class="text-xs text-red-600 font-semibold hover:underline">전체 초기화</button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse text-xs">
+                        <thead>
+                            <tr class="border-b border-outline-variant/30 text-on-surface-variant font-semibold">
+                                <th class="py-2.5 px-3">일시</th>
+                                <th class="py-2.5 px-3">구분</th>
+                                <th class="py-2.5 px-3">상세 내용</th>
+                                <th class="py-2.5 px-3 text-right">결과</th>
+                            </tr>
+                        </thead>
+                        <tbody id="history-log-tbody">
+                            <tr>
+                                <td colspan="4" class="py-8 text-center text-on-surface-variant/70">아직 등록된 기록이 없습니다.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- BOTTOM NAVBAR -->
+    <nav class="fixed bottom-0 left-0 w-full z-40 flex justify-around items-center px-gutter py-2 pb-safe bg-surface-container-lowest border-t border-outline-variant/40 shadow-[0_-4px_16px_rgba(0,0,0,0.04)] rounded-t-2xl">
+        <button id="nav-dashboard" onclick="switchTab('dashboard')" class="flex flex-col items-center justify-center text-primary px-4 py-1 hover:text-primary transition-colors duration-200">
+            <span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 1;">home_health</span>
+            <span class="text-[10px] font-semibold mt-1">홈</span>
+        </button>
+        <button id="nav-exercise" onclick="switchTab('exercise')" class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:text-primary transition-colors duration-200">
+            <span class="material-symbols-outlined text-[24px]">fitness_center</span>
+            <span class="text-[10px] font-semibold mt-1">운동</span>
+        </button>
+        <button id="nav-analysis" onclick="switchTab('analysis')" class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:text-primary transition-colors duration-200">
+            <span class="material-symbols-outlined text-[24px]">photo_camera</span>
+            <span class="text-[10px] font-semibold mt-1">분석</span>
+        </button>
+        <button id="nav-profile" onclick="switchTab('profile')" class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:text-primary transition-colors duration-200">
+            <span class="material-symbols-outlined text-[24px]">person</span>
+            <span class="text-[10px] font-semibold mt-1">기록</span>
+        </button>
+    </nav>
+
+    <!-- SHARE RESULT MODAL -->
+    <div id="share-modal" class="fixed inset-0 z-[150] hidden flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm transition-opacity duration-300">
+        <div class="glass-card rounded-3xl max-w-sm w-full p-6 text-center shadow-2xl border border-outline-variant/50 flex flex-col justify-between items-center transform scale-95 opacity-0 transition-all duration-300 relative overflow-hidden bg-white dark:bg-slate-900">
+            <!-- Neon background glow -->
+            <div class="absolute -top-12 -left-12 w-28 h-28 bg-primary/20 rounded-full blur-2xl pointer-events-none"></div>
+            <div class="absolute -bottom-12 -right-12 w-28 h-28 bg-[#FF007F]/20 rounded-full blur-2xl pointer-events-none"></div>
+            
+            <div class="w-full flex justify-between items-center mb-4">
+                <span class="text-xs font-extrabold text-primary tracking-wider uppercase">AI Posture Diagnosis Report</span>
+                <button onclick="closeShareModal()" class="w-8 h-8 rounded-full hover:bg-outline-variant/20 flex items-center justify-center transition-colors">
+                    <span class="material-symbols-outlined text-on-surface-variant text-[18px]">close</span>
+                </button>
+            </div>
+            
+            <!-- Result Icon/Therapist Caricature -->
+            <div class="w-24 h-24 rounded-2xl overflow-hidden bg-surface-container border border-outline-variant/20 shadow-inner mb-4 flex items-center justify-center relative">
+                <img id="share-modal-pet-img" src="stitch_assets/images/female_therapist_success.png" class="w-full h-full object-contain p-1 animate-float"/>
+            </div>
+            
+            <h3 class="text-lg font-bold text-on-surface mb-1">AI 자세분석 진단서</h3>
+            <p id="share-modal-assessment" class="text-sm font-black mb-4">바른 정렬 (안전)</p>
+            
+            <!-- Score & Angle Grid -->
+            <div class="grid grid-cols-2 gap-3 w-full mb-5">
+                <div class="bg-surface-container-low border border-outline-variant/20 rounded-2xl p-3">
+                    <span class="block text-[10px] text-on-surface-variant font-bold mb-1">경추 측정 각도</span>
+                    <span id="share-modal-angle" class="text-xl font-extrabold text-primary">52.4°</span>
+                </div>
+                <div class="bg-surface-container-low border border-outline-variant/20 rounded-2xl p-3">
+                    <span class="block text-[10px] text-on-surface-variant font-bold mb-1">자세 밸런스 점수</span>
+                    <span id="share-modal-score" class="text-xl font-extrabold text-primary">85점</span>
+                </div>
+            </div>
+            
+            <!-- Speech bubble Advice -->
+            <div class="bg-[#f0f4ff] dark:bg-[#1e293b] rounded-2xl p-3.5 text-xs text-on-surface leading-relaxed text-left w-full mb-6 relative">
+                <span class="block font-bold text-primary mb-1">민지 코치의 건강 조언</span>
+                <p id="share-modal-speech" class="font-medium">우와 회원님! 아주 훌륭한 바른 자세 정렬 상태입니다! 이 C자 척추 라인을 매일 잘 유지해 주세요! 🧘‍♀️</p>
+            </div>
+            
+            <!-- Buttons -->
+            <div class="flex flex-col gap-2.5 w-full">
+                <button onclick="shareResultLink()" class="btn-press w-full bg-primary hover:bg-primary-container text-on-primary py-3.5 rounded-xl font-bold shadow-md flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined text-[18px]">share</span>
+                    결과 친구에게 공유하기
+                </button>
+                <button onclick="closeShareModal()" class="btn-press w-full bg-surface-container-high hover:bg-outline-variant/30 text-on-surface py-3 rounded-xl text-xs font-semibold">
+                    내 대시보드로 가기
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast-message" class="fixed bottom-24 left-1/2 transform -translate-x-1/2 z-[200] hidden bg-black/85 text-white px-5 py-3 rounded-xl text-xs font-semibold shadow-lg backdrop-blur-md flex items-center gap-2 transition-all duration-300">
+        <span class="material-symbols-outlined text-green-500 text-[16px]">check_circle</span>
+        <span id="toast-text">복사되었습니다!</span>
+    </div>
+
+    <!-- Import JavaScript -->
+    <script type="module" src="/app.js"></script>
+</body>
+</html>
