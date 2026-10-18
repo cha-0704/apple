@@ -1,0 +1,88 @@
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1920px;height:1080px;background:#000}
+#main{position:relative;width:1920px;height:1080px;overflow:hidden;font-family:"Pretendard","Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic","WenQuanYi Zen Hei",sans-serif;word-break:keep-all}
+.bg{position:absolute;inset:0}
+.clip{visibility:hidden}
+.scene{position:absolute;inset:0;animation:sceneIn .55s cubic-bezier(.2,.8,.2,1) both,sceneOut .45s ease-in forwards}
+.stage{position:absolute;left:160px;right:160px;top:130px;bottom:210px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:34px;text-align:center}
+.chap{position:absolute;left:72px;top:56px;font-size:30px;font-weight:700;letter-spacing:.02em}
+.brand{position:absolute;right:72px;top:58px;font-size:24px;font-weight:900;letter-spacing:.3em;opacity:.55;z-index:5}
+
+/* 자막 */
+.cap{position:absolute;left:0;right:0;bottom:62px;display:flex;justify-content:center;z-index:10}
+.cap span{max-width:1500px;font-size:40px;line-height:1.4;font-weight:700;padding:14px 30px;border-radius:14px;text-align:center}
+
+/* 진행바(끝까지 보게 만드는 장치: 남은 분량이 보임) */
+.progress{position:absolute;left:0;right:0;top:0;height:8px;z-index:20}
+.progress i{display:block;height:100%;transform-origin:0 50%;animation:grow linear both}
+
+/* 공통 요소 */
+.kicker{font-size:40px;font-weight:700}
+.note{font-size:42px;font-weight:700}
+.source{font-size:24px;opacity:.6}
+.headline{font-size:68px;font-weight:900;line-height:1.25;max-width:1500px}
+.num .big{font-size:230px;font-weight:900;line-height:1;display:flex;align-items:baseline;justify-content:center}
+.num .unit{font-size:96px;margin-left:12px}
+.num .lbl{font-size:40px;font-weight:700;margin-top:18px}
+.stamp{font-size:84px;font-weight:900;padding:10px 46px;transform:rotate(var(--rot))}
+.compare{display:flex;gap:64px;justify-content:center;width:100%}
+.card{flex:0 1 640px;padding:44px 40px;border-radius:28px;display:flex;flex-direction:column;gap:14px;align-items:center}
+.clabel{font-size:40px;font-weight:700}
+.cval{position:relative;font-size:150px;font-weight:900;line-height:1.05;min-height:160px}
+.cval .unit{font-size:64px;margin-left:8px}
+.csub{font-size:32px;opacity:.85}
+.qmark{position:absolute;left:0;right:0;text-align:center}
+.list{list-style:none;display:flex;flex-direction:column;gap:22px;align-items:flex-start}
+.list li{font-size:52px;font-weight:700;padding:14px 34px;border-radius:16px}
+.bars{width:1400px;display:flex;flex-direction:column;gap:34px}
+.bar{display:grid;grid-template-columns:340px 1fr 220px;align-items:center;gap:26px}
+.blabel{font-size:38px;font-weight:700;text-align:right}
+.btrack{height:64px;border-radius:12px;overflow:hidden}
+.bfill{height:100%;transform-origin:0 50%}
+.bval{font-size:44px;font-weight:900;text-align:left}
+.formula{font-size:70px;font-weight:900;padding:30px 56px;border-radius:24px}
+.formula .hl{display:inline-block;padding:0 12px;border-radius:12px}
+.quiz{display:flex;flex-direction:column;gap:44px;align-items:center}
+.qq{font-size:66px;font-weight:900}
+.opts{display:flex;gap:40px}
+.opt{font-size:52px;font-weight:700;padding:20px 48px;border-radius:999px}
+.cdwrap{position:relative;height:200px;width:200px}
+.cd{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:170px;font-weight:900;opacity:0}
+.chart svg{display:block}
+.curve .ln{fill:none;stroke-width:9;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1;animation:draw 2.4s cubic-bezier(.5,0,.3,1) both}
+.curve .gl{stroke-width:2}
+.curve .ax{font-size:26px;font-weight:700}
+.curve .lb{font-size:44px;font-weight:900}
+.curve .lab{animation:fadeIn .6s both}
+.curve .hlzone{opacity:0;animation:pulseZone 1.6s ease-out both}
+
+/* 숫자 롤링 카운터 */
+.roll{display:inline-flex;align-items:baseline}
+.dg{display:inline-block;height:1em;line-height:1em;overflow:hidden;vertical-align:baseline}
+.strip{display:block;animation:roll 1.3s cubic-bezier(.15,.85,.25,1) both}
+.strip b{display:block;height:1em;font-weight:inherit}
+
+/* 키프레임 */
+@keyframes sceneIn{from{opacity:0;transform:scale(1.03)}to{opacity:1;transform:none}}
+@keyframes sceneOut{to{opacity:0;transform:scale(.985)}}
+@keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes roll{from{transform:translateY(0)}to{transform:translateY(calc(var(--d) * -1em))}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes up{from{opacity:0;transform:translateY(40px) rotate(var(--tilt,0deg))}to{opacity:1;transform:rotate(var(--tilt,0deg))}}
+@keyframes left{from{opacity:0;transform:translateX(-60px)}to{opacity:1;transform:none}}
+@keyframes pop{0%{opacity:0;transform:scale(.6) rotate(var(--tilt,0deg))}60%{opacity:1;transform:scale(1.06) rotate(var(--tilt,0deg))}100%{opacity:1;transform:scale(1) rotate(var(--tilt,0deg))}}
+@keyframes stamp{0%{opacity:0;transform:scale(2.6) rotate(var(--rot))}55%{opacity:1;transform:scale(.92) rotate(var(--rot))}100%{opacity:1;transform:scale(1) rotate(var(--rot))}}
+@keyframes out{to{opacity:0;transform:scale(.6)}}
+@keyframes blink{0%{opacity:0;transform:scale(1.6)}15%{opacity:1;transform:scale(1)}85%{opacity:1}100%{opacity:0;transform:scale(.8)}}
+@keyframes pulseZone{0%{opacity:0}30%{opacity:.5}100%{opacity:.22}}
+@keyframes hl{from{background-size:0 100%}to{background-size:100% 100%}}
+.a-up{animation:up .7s cubic-bezier(.2,.8,.2,1) both}
+.a-fade{animation:fadeIn .5s both}
+.a-left{animation:left .6s cubic-bezier(.2,.8,.2,1) both}
+.a-pop{animation:pop .7s cubic-bezier(.2,.8,.2,1) both}
+.a-stamp{animation:stamp .55s cubic-bezier(.3,.7,.3,1.2) both}
+.a-out{animation:out .35s ease-in both;animation-fill-mode:forwards}
+.a-blink{animation:blink 1s ease-out both}
+.a-grow{animation:grow 1.1s cubic-bezier(.2,.8,.2,1) both}
+.a-hl{background-repeat:no-repeat;animation:hl .6s ease-out both}

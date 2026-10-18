@@ -1,0 +1,46 @@
+/* 인포그래픽: 다크 네이비 + 그리드 + 민트/앰버 하이라이트 */
+.infographic{--ink:#eaf0ff;--dim:#7d8bb0;--hot:#3cf2c0;--warm:#ffb547;--danger:#ff5470;--cold:#6aa8ff;--panel:rgba(255,255,255,.06);--line:rgba(255,255,255,.09)}
+.infographic #main{color:var(--ink)}
+.infographic .bg{background:
+  radial-gradient(900px 600px at 78% 18%,rgba(60,242,192,.13),transparent 70%),
+  radial-gradient(800px 600px at 12% 90%,rgba(106,168,255,.12),transparent 70%),
+  linear-gradient(var(--line) 1px,transparent 1px) 0 0/80px 80px,
+  linear-gradient(90deg,var(--line) 1px,transparent 1px) 0 0/80px 80px,#0b1020}
+.infographic .chap{color:var(--hot);padding-left:22px;border-left:6px solid var(--hot)}
+.infographic .brand{color:var(--ink)}
+.infographic .cap span{background:rgba(5,8,18,.78);color:#fff;border:1px solid rgba(255,255,255,.12)}
+.infographic .progress{background:rgba(255,255,255,.08)}
+.infographic .progress i{background:linear-gradient(90deg,var(--cold),var(--hot))}
+.infographic .kicker{color:var(--warm);letter-spacing:.04em}
+.infographic .note{color:var(--ink);background:var(--panel);padding:16px 36px;border-radius:999px;border:1px solid var(--line)}
+.infographic .headline{background:linear-gradient(90deg,#fff,var(--hot));-webkit-background-clip:text;background-clip:text;color:transparent}
+.infographic .num .big{color:var(--hot);text-shadow:0 0 60px rgba(60,242,192,.35)}
+.infographic .num.tone-danger .big{color:var(--danger);text-shadow:0 0 60px rgba(255,84,112,.35)}
+.infographic .num .lbl{color:var(--dim)}
+.infographic .stamp{color:#0b1020;background:var(--warm);border-radius:18px;box-shadow:0 20px 60px rgba(255,181,71,.35)}
+.infographic .card{background:var(--panel);border:2px solid var(--line);backdrop-filter:blur(6px)}
+.infographic .card.tone-hot{border-color:var(--hot);box-shadow:0 0 0 1px var(--hot),0 30px 80px rgba(60,242,192,.18)}
+.infographic .card.tone-hot .cval{color:var(--hot)}
+.infographic .card.tone-cold .cval{color:var(--cold)}
+.infographic .card.tone-dim .cval{color:#c9d3ee}
+.infographic .clabel{color:var(--warm)}
+.infographic .csub{color:var(--dim)}
+.infographic .list li{background:var(--panel);border-left:6px solid var(--hot)}
+.infographic .btrack{background:rgba(255,255,255,.07)}
+.infographic .bar.tone-dim .bfill{background:linear-gradient(90deg,#3b4a73,#6a7bab)}
+.infographic .bar.tone-hot .bfill{background:linear-gradient(90deg,#1fb894,var(--hot))}
+.infographic .bar.tone-danger .bfill{background:linear-gradient(90deg,#b8324d,var(--danger))}
+.infographic .bar.tone-hot .bval{color:var(--hot)}
+.infographic .bar.tone-danger .bval{color:var(--danger)}
+.infographic .formula{background:var(--panel);border:2px solid var(--line);font-family:"JetBrains Mono","Pretendard","Noto Sans KR","WenQuanYi Zen Hei",monospace}
+.infographic .formula .hl{background-image:linear-gradient(var(--warm),var(--warm));color:#0b1020}
+.infographic .qq{color:#fff}
+.infographic .opt{background:var(--panel);border:2px solid var(--line)}
+.infographic .cd{color:var(--warm)}
+.infographic .curve .gl{stroke:var(--line)}
+.infographic .curve .ax{fill:var(--dim)}
+.infographic .curve .ln.simple{stroke:var(--dim)}
+.infographic .curve .ln.comp{stroke:var(--hot);filter:drop-shadow(0 0 12px rgba(60,242,192,.6))}
+.infographic .curve .lb.comp{fill:var(--hot)}
+.infographic .curve .lb.simple{fill:var(--dim)}
+.infographic .curve .hlzone{fill:var(--warm)}
