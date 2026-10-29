@@ -19,6 +19,8 @@ const EFFORT = 'medium';
 const MAX_TOKENS = 16000;
 const SHEET_NAME = 'keywords';
 const POSTS_PER_DAY = 1;
+// 1 バッチ = 1 記事なので固定 ID。行番号に依存させない（シートを並べ替えても結果を取れるように）
+const CUSTOM_ID = 'post';
 
 // 拒否（refusal）時にサーバー側で別モデルに切り替える設定。
 // バッチ作成が fallbacks のせいで失敗した場合は自動で外して再送する。
@@ -112,16 +114,24 @@ function collectFinishedBatches_() {
       const batch = claudeRequest_('get', '/v1/messages/batches/' + batchId);
       if (batch.processing_status !== 'ended') continue;
 
-      const result = fetchBatchResult_(batch.results_url, 'row-' + rowNum);
+      const result = fetchBatchResult_(batch.results_url);
       const post = parsePost_(result);
       const url = createBloggerDraft_(post);
       setRow_(sheet, rowNum, 'DRAFTED', batchId, url);
       notify_(rows[i][COL.KEYWORD - 1], post, url);
     } catch (e) {
       if (/fallback/i.test(String(e.message))) {
-        // バッチ内で fallbacks が使えなかった: 以後は外して、この行を再送待ちに戻す
+        // バッチ内で fallbacks が使えなかった: 以後は外して、この行をすぐに再送する
+        // （1 日の枠はこの行がすでに使っているので、翌日まで待たせない）
         PropertiesService.getScriptProperties().setProperty('NO_FALLBACK', 'true');
-        setRow_(sheet, rowNum, '', '', '');
+        try {
+          const memo = String(rows[i][COL.MEMO - 1] || '').trim();
+          const retry = createBatch_(buildParams_(String(rows[i][COL.KEYWORD - 1]).trim(), memo));
+          setRow_(sheet, rowNum, 'QUEUED', retry.id, '');
+        } catch (retryError) {
+          setRow_(sheet, rowNum, 'ERROR', batchId, String(retryError.message || retryError).slice(0, 300));
+          notifyError_(rows[i][COL.KEYWORD - 1], retryError);
+        }
         continue;
       }
       setRow_(sheet, rowNum, 'ERROR', batchId, String(e.message || e).slice(0, 300));
@@ -144,7 +154,7 @@ function submitTodaysBatch_(force) {
 
     const rowNum = i + 1;
     const memo = String(rows[i][COL.MEMO - 1] || '').trim();
-    const batch = createBatch_('row-' + rowNum, buildParams_(keyword, memo));
+    const batch = createBatch_(buildParams_(keyword, memo));
     setRow_(sheet, rowNum, 'QUEUED', batch.id, '');
     props.setProperties({ SENT_DATE: today, SENT_COUNT: String(sentToday + 1) });
     return;
@@ -168,7 +178,8 @@ function buildParams_(keyword, memo) {
   };
 }
 
-function createBatch_(customId, params) {
+function createBatch_(params) {
+  const customId = CUSTOM_ID;
   if (PropertiesService.getScriptProperties().getProperty('NO_FALLBACK')) {
     return claudeRequest_('post', '/v1/messages/batches', { requests: [{ custom_id: customId, params: params }] });
   }
@@ -183,14 +194,14 @@ function createBatch_(customId, params) {
   }
 }
 
-function fetchBatchResult_(resultsUrl, customId) {
+function fetchBatchResult_(resultsUrl) {
   const res = UrlFetchApp.fetch(resultsUrl, { headers: claudeHeaders_(), muteHttpExceptions: true });
   if (res.getResponseCode() !== 200) throw new Error('結果の取得に失敗: ' + res.getContentText().slice(0, 200));
   const line = res.getContentText().split('\n')
     .filter(l => l.trim())
     .map(l => JSON.parse(l))
-    .find(r => r.custom_id === customId);
-  if (!line) throw new Error('バッチ結果が見つかりません: ' + customId);
+    .find(r => r.custom_id === CUSTOM_ID);
+  if (!line) throw new Error('バッチ結果が見つかりません');
   if (line.result.type !== 'succeeded') throw new Error('生成失敗: ' + JSON.stringify(line.result).slice(0, 200));
   return line.result.message;
 }
