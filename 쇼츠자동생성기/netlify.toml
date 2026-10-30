@@ -1,0 +1,12 @@
+## Netlify configuration for static site
+# netlify.toml
+
+[build]
+  command = "npm run build"
+  publish = "dist"   
+
+# Optional: Redirect all routes to index.html for SPA behavior (if needed)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

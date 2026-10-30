@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>쇼츠 공장 · 3D 단면 콘텐츠 자동 생성기</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <span class="logo">🏭</span>
+      <div>
+        <h1>쇼츠 공장</h1>
+        <p>주제 하나 → 대본 · 이미지 프롬프트 · 썸네일 문구</p>
+      </div>
+    </div>
+    <button id="settingsToggle" class="ghost" type="button">⚙️ API 설정</button>
+  </header>
+
+  <section id="settings" class="card settings" hidden>
+    <label>Gemini API 키
+      <input id="apiKey" type="password" placeholder="AI Studio에서 발급한 키 (AIza…)" autocomplete="off" />
+    </label>
+    <label>모델
+      <input id="model" list="modelList" />
+      <datalist id="modelList">
+        <option value="gemini-2.5-flash"></option>
+        <option value="gemini-2.5-pro"></option>
+        <option value="gemini-2.5-flash-lite"></option>
+      </datalist>
+    </label>
+    <p class="hint">키는 이 브라우저(localStorage)에만 저장돼요. 배포할 땐 공개 사이트에 키를 넣지 마세요.</p>
+  </section>
+
+  <main class="layout">
+    <section class="card input">
+      <h2>1. 채널</h2>
+      <div id="channels" class="channels"></div>
+
+      <h2>2. 포맷</h2>
+      <div id="formats" class="segmented"></div>
+
+      <h2>3. 주제</h2>
+      <div class="row">
+        <input id="topic" placeholder="예: 테슬라 옵티머스 손가락은 왜 22개 관절일까" />
+        <button id="suggestBtn" class="ghost" type="button">💡 주제 10개 추천</button>
+      </div>
+      <div id="topicChips" class="chips"></div>
+
+      <label class="notes">추가 요청 (선택)
+        <textarea id="notes" rows="2" placeholder="예: 최근 뉴스 각도로, 초등학생도 이해하게, 마지막에 구독 유도"></textarea>
+      </label>
+
+      <button id="generateBtn" class="primary" type="button">🚀 제작 패키지 생성</button>
+      <p id="status" class="status" role="status"></p>
+
+      <details class="history">
+        <summary>🗂️ 생성 기록</summary>
+        <ul id="historyList"></ul>
+      </details>
+    </section>
+
+    <section id="output" class="output">
+      <div class="empty card">
+        <p>왼쪽에서 채널과 주제를 고르고 <b>생성</b>을 누르면<br />여기에 제작 패키지가 나타나요.</p>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
