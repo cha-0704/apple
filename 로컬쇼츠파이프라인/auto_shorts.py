@@ -21,7 +21,7 @@ LM_URL = "http://localhost:1234/v1/chat/completions"
 VV_URL = "http://localhost:50021"
 HERE = os.path.dirname(os.path.abspath(__file__))
 os.chdir(HERE)  # 모든 파일을 이 스크립트 폴더에 저장
-JP = re.compile(r"[぀-ヿ一-鿿]")
+JP = re.compile("[\\u3040-\\u30ff\\u4e00-\\u9fff]")  # 히라가나·가타카나·한자
 
 
 def get_script():
