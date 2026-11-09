@@ -15,6 +15,7 @@ FONT       = "Noto Sans JP"   # 없으면 "Meiryo" 또는 "Yu Gothic"
 FONT_SIZE  = 80
 MARGIN_TOP = 180          # 화면 위에서 180px 아래 (상단 UI 피하기)
 BG_VIDEO   = "input.mp4"  # 배경 영상(없으면 검은 화면으로 자동 생성)
+MODEL      = ""           # 비워두면 LM Studio에 로드된 모델 자동 사용
 # ================================================
 
 LM_URL = "http://localhost:1234/v1/chat/completions"
@@ -25,10 +26,22 @@ JP = re.compile("[\\u3040-\\u30ff\\u4e00-\\u9fff]")  # 히라가나·가타카�
 KO = re.compile("[\\uac00-\\ud7a3]")                   # 한글
 
 
+def pick_model():
+    if MODEL:
+        return MODEL
+    r = requests.get(LM_URL.replace("/chat/completions", "/models"), timeout=30)
+    ids = [m["id"] for m in r.json().get("data", [])] if r.ok else []
+    chat = [i for i in ids if "embed" not in i.lower()]   # 임베딩 모델 제외
+    if not chat:
+        sys.exit("❌ LM Studio에 로드된 모델이 없어요. 모델을 먼저 로드하세요.")
+    return chat[0]
+
+
 def get_script():
-    print("1️⃣  LM Studio 대본 작성 중...")
+    model = pick_model()
+    print(f"1️⃣  LM Studio 대본 작성 중... (모델: {model})")
     payload = {
-        "model": "local-model",
+        "model": model,
         "temperature": 0.8,
         "messages": [
             {"role": "system", "content":
