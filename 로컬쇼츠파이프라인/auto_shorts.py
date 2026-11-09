@@ -22,6 +22,7 @@ VV_URL = "http://localhost:50021"
 HERE = os.path.dirname(os.path.abspath(__file__))
 os.chdir(HERE)  # 모든 파일을 이 스크립트 폴더에 저장
 JP = re.compile("[\\u3040-\\u30ff\\u4e00-\\u9fff]")  # 히라가나·가타카나·한자
+KO = re.compile("[\\uac00-\\ud7a3]")                   # 한글
 
 
 def get_script():
@@ -38,15 +39,18 @@ def get_script():
         ],
     }
     r = requests.post(LM_URL, json=payload, timeout=300)
-    r.raise_for_status()
+    if not r.ok:
+        sys.exit(f"❌ LM Studio 오류 {r.status_code}: 모델이 로드됐는지 확인하세요.\n{r.text[:300]}")
     text = r.json()["choices"][0]["message"]["content"]
     text = re.sub(r"<think>.*?</think>", "", text, flags=re.S)  # 추론형 모델 대비
 
     lines = []
     for ln in text.splitlines():
-        ln = re.sub(r"[*_#`]", "", ln)                      # 마크다운 기호 제거
-        ln = re.sub(r"^[\s\->\d\.\)、:：]+", "", ln).strip().strip("「」\"' ")
-        if ln and JP.search(ln):      # 일본어가 들어간 줄만 사용
+        ln = re.sub(r"[*_#`{}\\]", "", ln)                 # 마크다운·자막 명령 기호 제거
+        ln = ln.replace("／", "/")                           # 전각 슬래시 → 반각
+        ln = re.sub(r"^\s*(?:\d+\s*[.)．、:：]|[-•>])\s*", "", ln)  # 목록 번호(1. 2) - •)만 제거
+        ln = ln.strip().strip("「」\"' ")
+        if ln and JP.search(ln) and not KO.search(ln):  # 한국어 섞인 줄 제외
             lines.append(ln)
     if not lines:
         sys.exit("❌ 일본어 대본을 못 받았어요. LM Studio에 모델이 로드됐는지 확인하세요.\n" + text)
