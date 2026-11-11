@@ -6,7 +6,7 @@ const path = require('path');
 
 function loadPlaywright() {
   try { return require('playwright'); } catch (e) {}
-  const g = execFileSync('npm', ['root', '-g']).toString().trim();
+  const g = execFileSync('npm', ['root', '-g'], { shell: true }).toString().trim();
   return require(path.join(g, 'playwright'));
 }
 

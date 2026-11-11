@@ -200,10 +200,10 @@ def build(proj, style, speed, voice):
             ce = clk.at(si, li + 1) if li + 1 < len(sc["lines"]) else clk.end(si, li) + 0.2
             caps.append(f'<div class="clip cap" data-start="{cs:.3f}" data-duration="{ce - cs:.3f}" data-track-index="2"><span>{esc(text)}</span></div>')
 
-    css = (ROOT / "themes" / "base.css").read_text() + (ROOT / "themes" / f"{style}.css").read_text()
+    css = (ROOT / "themes" / "base.css").read_text(encoding="utf-8") + (ROOT / "themes" / f"{style}.css").read_text(encoding="utf-8")
     audio = (f'<audio class="clip" id="narr" data-start="0" data-duration="{clk.total:.3f}" data-track-index="3" '
              f'data-volume="1" src="audio/narration.wav" preload="auto"></audio>') if has_audio else ""
-    runtime = (ROOT / "themes" / "runtime.js").read_text().replace("__TOTAL__", f"{clk.total:.3f}")
+    runtime = (ROOT / "themes" / "runtime.js").read_text(encoding="utf-8").replace("__TOTAL__", f"{clk.total:.3f}")
     page = f'''<!doctype html>
 <html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width={W}, height={H}">
