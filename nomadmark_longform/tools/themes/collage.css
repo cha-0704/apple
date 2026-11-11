@@ -1,0 +1,77 @@
+/* 콜라주: 크라프트지 배경 + 종이조각·마스킹테이프·하프톤·협박편지 타이포 */
+.collage{--ink:#1b1b1b;--paper:#fffdf6;--red:#e63946;--yel:#ffd23f;--blu:#3a86ff;--grn:#2ec4b6;--kraft:#e8d9bd}
+.collage #main{color:var(--ink);font-family:"Black Han Sans","Pretendard","Noto Sans KR","WenQuanYi Zen Hei",sans-serif}
+.collage .bg{background:
+  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .25 0 0 0 0 .12 0 0 0 .22 0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)'/%3E%3C/svg%3E"),
+  radial-gradient(1200px 800px at 50% 40%,#f2e6cf,var(--kraft) 70%,#d6c29d)}
+.collage .bg::after{content:"";position:absolute;inset:0;background:radial-gradient(rgba(0,0,0,.09) 1.4px,transparent 1.6px) 0 0/22px 22px;mask:linear-gradient(115deg,#000 0 18%,transparent 40% 70%,#000 92%)}
+.collage .chap{background:var(--ink);color:var(--yel);padding:10px 26px;transform:rotate(-2deg);font-family:"Black Han Sans","WenQuanYi Zen Hei",sans-serif;font-weight:400;box-shadow:4px 4px 0 var(--red)}
+.collage .brand{color:var(--ink);opacity:.75;font-family:"Black Han Sans","WenQuanYi Zen Hei",sans-serif;font-weight:400}
+.collage .cap span{background:var(--paper);color:var(--ink);border-radius:2px;font-family:"Pretendard","Noto Sans KR","WenQuanYi Zen Hei",sans-serif;box-shadow:6px 6px 0 rgba(0,0,0,.85);transform:rotate(-.6deg)}
+.collage .progress{background:rgba(0,0,0,.12);height:12px}
+.collage .progress i{background:repeating-linear-gradient(45deg,var(--red) 0 14px,var(--yel) 14px 28px)}
+
+/* 장식 */
+.collage .dc{position:absolute;display:block;transform:rotate(var(--r));pointer-events:none;opacity:.9}
+.collage .dc.tape{width:230px;height:56px;background:rgba(255,210,63,.55);box-shadow:0 1px 3px rgba(0,0,0,.15);clip-path:polygon(3% 0,97% 4%,100% 50%,96% 100%,2% 96%,0 50%)}
+.collage .dc.dots{width:260px;height:260px;border-radius:50%;background:radial-gradient(var(--red) 3.5px,transparent 4px) 0 0/18px 18px;opacity:.55}
+.collage .dc.scrap{width:300px;height:190px;background:var(--blu);clip-path:polygon(0 8%,12% 0,40% 6%,70% 0,100% 10%,95% 40%,100% 75%,88% 100%,50% 94%,15% 100%,0 80%,5% 45%);opacity:.75}
+.collage .dc.scrap2{width:220px;height:260px;background:repeating-linear-gradient(0deg,#fff 0 30px,#cfe3ff 30px 32px);clip-path:polygon(6% 0,100% 3%,94% 30%,100% 62%,92% 100%,0 96%,5% 55%,0 20%);box-shadow:0 4px 10px rgba(0,0,0,.2)}
+.collage .dc.circle{width:170px;height:170px;border-radius:50%;border:10px solid var(--grn);opacity:.7}
+
+/* 요소 */
+.collage .kicker{background:var(--ink);color:#fff;padding:10px 30px;font-weight:400;transform:rotate(var(--tilt));letter-spacing:.06em}
+.collage .note{font-family:"Gaegu","Nanum Pen Script","WenQuanYi Zen Hei",cursive;font-size:54px;color:var(--ink);background:var(--yel);padding:8px 34px;transform:rotate(var(--tilt));box-shadow:5px 5px 0 var(--ink)}
+.collage .source{font-family:"Pretendard","Noto Sans KR","WenQuanYi Zen Hei",sans-serif;color:var(--ink)}
+.collage .headline{font-weight:400;background:var(--paper);padding:26px 44px;box-shadow:10px 10px 0 var(--ink);font-size:64px;transform:rotate(var(--tilt))}
+.collage .headline::first-line{color:var(--red)}
+.collage .ransom{display:inline-flex;align-items:center;gap:6px}
+.collage .rl{display:inline-block;padding:4px 16px;line-height:1.05;transform:rotate(var(--r));box-shadow:5px 6px 0 rgba(0,0,0,.25);animation:stick .45s cubic-bezier(.3,.7,.3,1.3) both}
+.collage .rl.c1{background:var(--paper);color:var(--ink)}
+.collage .rl.c2{background:var(--ink);color:#fff}
+.collage .rl.c3{background:var(--red);color:#fff}
+.collage .rl.c4{background:var(--yel);color:var(--ink)}
+.collage .rl.c5{background:var(--blu);color:#fff}
+.collage .sp{width:30px}
+.collage .num .big{font-weight:400;font-size:190px}
+.collage .num .unit{font-size:110px;color:var(--red);margin-left:20px}
+.collage .num .lbl{font-family:"Pretendard","Noto Sans KR","WenQuanYi Zen Hei",sans-serif;font-weight:900;background:var(--paper);padding:10px 30px;box-shadow:6px 6px 0 var(--ink)}
+.collage .num.tone-danger .unit{color:var(--red)}
+.collage .stamp{font-weight:400;color:var(--red);border:10px double var(--red);border-radius:14px;background:rgba(255,253,246,.35);mix-blend-mode:multiply;letter-spacing:.06em}
+.collage .card{position:relative;background:var(--paper);border-radius:3px;box-shadow:0 18px 30px rgba(0,0,0,.22),8px 8px 0 var(--ink);padding:60px 40px 40px}
+.collage .card::before{content:"";position:absolute;top:-24px;left:50%;width:190px;height:50px;margin-left:-95px;background:rgba(255,210,63,.7);transform:rotate(-4deg);clip-path:polygon(3% 0,97% 4%,100% 50%,96% 100%,2% 96%,0 50%)}
+.collage .card.tone-hot{background:var(--paper);outline:6px solid var(--red);outline-offset:-18px}
+.collage .card.tone-hot .cval{color:var(--red)}
+.collage .card.tone-cold .cval{color:var(--blu)}
+.collage .card.tone-dim .cval{color:#55504a}
+.collage .cval{font-weight:400}
+.collage .clabel{font-weight:400}
+.collage .csub{font-family:"Gaegu","WenQuanYi Zen Hei",cursive;font-size:38px}
+.collage .list li{background:var(--paper);font-weight:400;box-shadow:6px 6px 0 var(--ink);border-left:16px solid var(--red)}
+.collage .list li:nth-child(2n){transform:rotate(-1deg);border-left-color:var(--blu)}
+.collage .list li:nth-child(3n){border-left-color:var(--yel)}
+.collage .bars{background:var(--paper);padding:40px 50px;box-shadow:10px 10px 0 var(--ink);transform:rotate(var(--tilt))}
+.collage .blabel,.collage .bval{font-weight:400}
+.collage .btrack{background:repeating-linear-gradient(-45deg,#eee 0 10px,#e2ddd2 10px 20px);border-radius:0}
+.collage .bfill{clip-path:polygon(0 0,100% 6%,98% 50%,100% 94%,0 100%)}
+.collage .bar.tone-dim .bfill{background:#8d8579}
+.collage .bar.tone-hot .bfill{background:var(--grn)}
+.collage .bar.tone-danger .bfill{background:var(--red)}
+.collage .bar.tone-danger .bval{color:var(--red)}
+.collage .formula{background:var(--paper);font-weight:400;box-shadow:10px 10px 0 var(--ink);border-radius:0;transform:rotate(var(--tilt))}
+.collage .formula .hl{background-image:linear-gradient(var(--yel),var(--yel));color:var(--red)}
+.collage .qq{font-weight:400;background:var(--paper);padding:20px 40px;box-shadow:8px 8px 0 var(--ink)}
+.collage .opt{font-weight:400;background:var(--yel);border-radius:4px;box-shadow:6px 6px 0 var(--ink)}
+.collage .opt:nth-child(2){background:var(--blu);color:#fff}
+.collage .opt:nth-child(3){background:var(--grn)}
+.collage .cd{color:var(--red);font-weight:400;-webkit-text-stroke:6px var(--ink);paint-order:stroke fill}
+.collage .chart{background:var(--paper) linear-gradient(#cfe3ff 1px,transparent 1px) 0 0/40px 40px;padding:20px;box-shadow:10px 10px 0 var(--ink);transform:rotate(var(--tilt))}
+.collage .curve .gl{stroke:#9fb6d6}
+.collage .curve .ax{fill:#55504a;font-family:"Gaegu","WenQuanYi Zen Hei",cursive;font-size:32px}
+.collage .curve .ln.simple{stroke:#55504a;stroke-width:8}
+.collage .curve .ln.comp{stroke:var(--red);stroke-width:12}
+.collage .curve .lb{font-weight:400;font-family:"Black Han Sans","WenQuanYi Zen Hei",sans-serif}
+.collage .curve .lb.comp{fill:var(--red)}
+.collage .curve .lb.simple{fill:#55504a}
+.collage .curve .hlzone{fill:var(--yel)}
+@keyframes stick{0%{opacity:0;transform:scale(1.8) rotate(calc(var(--r) + 20deg))}100%{opacity:1;transform:scale(1) rotate(var(--r))}}

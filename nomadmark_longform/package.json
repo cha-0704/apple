@@ -1,0 +1,19 @@
+{
+  "name": "nomadmark-longform",
+  "private": true,
+  "description": "편집 프로그램 없이 대본(JSON) → Supertonic 음성 → HyperFrames(HTML) → MP4 롱폼 자동 제작",
+  "scripts": {
+    "voice:test": "python tools/tts_test.py",
+    "build:infographic": "python tools/build.py projects/compound_interest --style infographic --voice ko_F1 --speed 1.05",
+    "build:collage": "python tools/build.py projects/compound_interest --style collage --voice ko_M1 --speed 1.2",
+    "tts:infographic": "python tools/tts_supertonic.py projects/compound_interest --voice ko_F1 --speed 1.05 --out infographic",
+    "tts:collage": "python tools/tts_supertonic.py projects/compound_interest --voice ko_M1 --speed 1.2 --out collage",
+    "render:infographic": "node tools/render.cjs projects/compound_interest/infographic output/compound_interest_infographic_F1.mp4",
+    "render:collage": "node tools/render.cjs projects/compound_interest/collage output/compound_interest_collage_M1.mp4",
+    "infographic": "npm run tts:infographic && npm run build:infographic && npm run render:infographic",
+    "collage": "npm run tts:collage && npm run build:collage && npm run render:collage"
+  },
+  "devDependencies": {
+    "playwright": "^1.56.0"
+  }
+}
